@@ -7,12 +7,13 @@
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
   body{background:#0F0F0F;color:#F5F5F5;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
+  /* FIXED TOPBAR */
  .topbar{background:#1A1A1A;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #2a2a2a;font-size:0.9rem;position:relative;z-index:100}
  .menu{position:relative}
  .menu-title{padding:10px 14px;cursor:pointer;color:#DDB892;transition:0.2s}
- .menu:hover.menu-title{background:#DDB892;color:#0F0F0F} /* FIXED SPACE */
+ .menu:hover.menu-title{background:#DDB892;color:#0F0F0F} /* SPACE ADDED HERE */
  .dropdown{position:absolute;top:100%;left:0;background:#2A2A2A;border:1px solid #333;border-radius:6px;min-width:200px;display:none;padding:5px 0;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
- .menu:hover.dropdown{display:block} /* FIXED SPACE */
+ .menu:hover.dropdown{display:block} /* SPACE ADDED HERE */
  .dropdown-item{padding:8px 15px;cursor:pointer;color:#F5F5F5;font-size:0.85rem}
  .dropdown-item:hover{background:#DDB892;color:#0F0F0F}
  .dropdown-divider{height:1px;background:#333;margin:5px 0}
@@ -48,7 +49,7 @@
       </div>
     </div>
     <div class="menu"><div class="menu-title">Edit</div><div class="dropdown"><div class="dropdown-item">Undo</div><div class="dropdown-item">Redo</div></div></div>
-    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Grid</div></div></div>
+    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Grid</div><div class="dropdown-item">Auto Fit</div></div></div>
     <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric</div></div></div>
     <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Colors</div></div></div>
     <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Toggle Left</div><div class="dropdown-item" onclick="togglePanel('right')">Toggle Right</div></div></div>
@@ -91,28 +92,23 @@
   controls.target.set(0,1.2,0);
 
   scene.add(new THREE.AmbientLight(0xDDB892, 0.8));
-  const light = new THREE.DirectionalLight(0xDDB892, 1);
-  light.position.set(2,3,2);
-  scene.add(light);
+  scene.add(new THREE.DirectionalLight(0xDDB892, 1));
 
-  // HUMAN MANNEQUIN - NO AUTO SPIN
+  // HUMAN - NO SPIN
   const mat = new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true});
   const human = new THREE.Group();
-  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 1.2, 16), mat);
-  torso.position.y = 1.2; human.add(torso);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), mat);
-  head.position.y = 2.1; human.add(head);
+  human.add(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 1.2, 16), mat)).position.y = 1.2;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), mat); head.position.y = 2.1; human.add(head);
   const armGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.9, 8);
   const lArm = new THREE.Mesh(armGeo, mat); lArm.position.set(-0.4, 1.3, 0); lArm.rotation.z = 0.4; human.add(lArm);
   const rArm = new THREE.Mesh(armGeo, mat); rArm.position.set(0.4, 1.3, 0); rArm.rotation.z = -0.4; human.add(rArm);
   const legGeo = new THREE.CylinderGeometry(0.1, 0.1, 1.3, 8);
-  const lLeg = new THREE.Mesh(legGeo, mat); lLeg.position.set(-0.15, -0.05, 0); human.add(lLeg);
-  const rLeg = new THREE.Mesh(legGeo, mat); rLeg.position.set(0.15, -0.05, 0); human.add(rLeg);
+  human.add(new THREE.Mesh(legGeo, mat)).position.set(-0.15, -0.05, 0);
+  human.add(new THREE.Mesh(legGeo, mat)).position.set(0.15, -0.05, 0);
   scene.add(human);
 
   function animate(){
     requestAnimationFrame(animate);
-    // NO AUTO ROTATION HERE
     controls.update();
     renderer.render(scene,camera);
   }
@@ -128,7 +124,6 @@
     panel.style.display = panel.style.display === 'none'? 'block' : 'none';
   }
 
-  // SAVE FUNCTIONS
   window.saveGLB = () => {
     const exporter = new GLTFExporter();
     exporter.parse(human, (glb) => {
@@ -139,12 +134,10 @@
       link.click();
     }, {binary: true});
   }
-
   window.savePNG = () => {
     renderer.render(scene, camera);
-    const dataURL = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.href = dataURL;
+    link.href = canvas.toDataURL('image/png');
     link.download = 'screenshot.png';
     link.click();
   }
