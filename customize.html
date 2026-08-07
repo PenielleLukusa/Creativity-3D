@@ -1,28 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customize - Creativity</title>
+<title>Select Model - Creativity</title>
 <style>
-  .wrapper{display:flex;gap:20px;max-width:1200px;margin:40px auto;padding:20px}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5}
+  .nav{padding:20px;text-align:center;border-bottom:1px solid #2a2a2a}
+  .nav button{background:#2a2a2a;color:#F5F5F5;border:none;padding:8px 16px;border-radius:6px;margin:0 5px;cursor:pointer}
+  .nav button.active{background:#DDB892;color:#0F0F0F}
+  h2{text-align:center;margin:30px 0;color:#DDB892;font-weight:400}
+  .wrapper{display:flex;gap:20px;max-width:1200px;margin:0 auto;padding:20px}
   .side-panel{background:#1A1A1A;padding:20px;border-radius:12px;width:250px}
   .viewer{flex:1;background:#1A1A1A;border-radius:12px;display:flex;align-items:center;justify-content:center;height:500px}
-  .measurements input{width:100%;margin:5px 0;padding:8px;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5}
+  .measurements input{width:100%;margin:8px 0;padding:10px;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5}
+  .gender-btn{background:#2a2a2a;color:#F5F5F5;border:1px solid #333;padding:10px;width:100%;border-radius:6px;margin:6px 0;cursor:pointer;text-align:left}
+  .gender-btn.active{background:#DDB892;color:#0F0F0F;border-color:#DDB892}
+  .btn{background:#DDB892;color:#0F0F0F;border:none;padding:12px;width:100%;border-radius:8px;font-weight:600;cursor:pointer;margin-top:15px}
   @media(max-width:900px){.wrapper{flex-direction:column}}
 </style>
 </head>
 <body>
-  <div class="avatar"></div>
-  <div class="nav"><button class="active">Home</button><button>Explore</button><button>Gallery</button><button>Marketplace</button></div>
+  <div class="nav">
+    <button class="active">Home</button>
+    <button>Explore</button>
+    <button>Gallery</button>
+    <button>Marketplace</button>
+  </div>
 
-  <h2 style="text-align:center;margin-top:20px">Customize your own model</h2>
+  <h2>Select Model & Customize</h2>
   <div class="wrapper">
     <div class="side-panel">
-      <button>Skin</button> <button>Size</button>
-      <p>Male</p><p>Female</p><p>Non-binary</p>
-      <button class="btn" style="margin-top:20px" onclick="window.location.href='workspace.html'">Create</button>
+      <button>Skin</button> 
+      <button>Size</button>
+      <h4 style="margin:15px 0 8px;color:#DDB892">Base Model</h4>
+      <button class="gender-btn active" onclick="selectGender('female')">Female</button>
+      <button class="gender-btn" onclick="selectGender('male')">Male</button>
+      <button class="gender-btn" onclick="selectGender('nonbinary')">Non-binary</button>
+      <button class="btn" id="createBtn">Create</button>
     </div>
+    
     <div class="viewer"><p>3D Model Preview</p></div>
+    
     <div class="side-panel measurements">
       <input placeholder="Bust/Chest Circumference">
       <input placeholder="Waist Circumference">
@@ -31,5 +51,25 @@
       <button>More options</button>
     </div>
   </div>
+
+<script>
+let selectedGender = 'female';
+
+function selectGender(gender) {
+  selectedGender = gender;
+  document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  // Later we can update the 3D preview here
+}
+
+document.getElementById('createBtn').addEventListener('click', () => {
+  const bust = document.querySelector('input[placeholder*="Bust"]').value;
+  const waist = document.querySelector('input[placeholder*="Waist"]').value;
+  const hip = document.querySelector('input[placeholder*="Hip"]').value;
+  const height = document.querySelector('input[placeholder*="Height"]').value;
+  
+  window.location.href = `workspace.html?gender=${selectedGender}&bust=${bust}&waist=${waist}&hip=${hip}&height=${height}`;
+});
+</script>
 </body>
 </html>
