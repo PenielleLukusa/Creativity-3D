@@ -5,11 +5,9 @@
   <title>Sign Up - Creativity 3D</title>
   <link rel="stylesheet" href="style.css">
   <script type="module">
-    // Import Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCQF_gA_isYuLQWE8zTFuKKhMuDGO3Epcg",
       authDomain: "creativity-3d.firebaseapp.com",
@@ -19,11 +17,9 @@
       appId: "1:489202381387:web:f9f89c85c53fba83f8d3ce"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Handle Signup
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.querySelector('.auth-form');
       form.addEventListener('submit', async (e) => {
@@ -35,12 +31,11 @@
         
         try {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user;
-          console.log("User created:", user);
           alert("Account Created Successfully!");
-          window.location.href = "index.html";  // CHANGED THIS
+          window.location.href = "home.html";  // FIXED: go to home page
         } catch (error) {
           alert("Error: " + error.message);
+          console.error(error);
         }
       });
     });
