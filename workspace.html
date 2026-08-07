@@ -34,14 +34,14 @@
 </head>
 <body>
   <div class="topbar">
-    <div class="menu"><div class="menu-title">File</div><div class="dropdown"><div class="dropdown-item">New Design</div><div class="dropdown-item">Open</div><div class="dropdown-item">Save</div><div class="dropdown-item">Save as GLB</div><div class="divider"></div><div class="dropdown-item" onclick="exportPNG()">Export as PNG</div><div class="dropdown-item">Export as Video</div></div></div>
+    <div class="menu"><div class="menu-title">File</div><div class="dropdown"><div class="dropdown-item">New Design</div><div class="dropdown-item">Open</div><div class="dropdown-item">Save</div><div class="dropdown-item">Save as GLB</div><div class="divider"></div><div class="dropdown-item" onclick="exportPNG()">Export as PNG</div></div></div>
     <div class="menu"><div class="menu-title">Edit</div><div class="dropdown"><div class="dropdown-item">Undo</div><div class="dropdown-item">Redo</div><div class="divider"></div><div class="dropdown-item">Cut</div><div class="dropdown-item">Copy</div><div class="dropdown-item">Paste</div><div class="dropdown-item">Delete</div></div></div>
-    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Comments</div><div class="dropdown-item">Show Grid</div><div class="dropdown-item">Snap to Grid</div><div class="dropdown-item">Auto Fit Fabric</div></div></div>
-    <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric Image</div><div class="dropdown-item">Import Reference Image</div><div class="dropdown-item">Apply Texture to Model</div><div class="dropdown-item">Remove Texture</div></div></div>
-    <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Fabric Filters</div><div class="dropdown-item">Color Filters</div><div class="dropdown-item">Pattern Filters</div></div></div>
-    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div><div class="dropdown-item">Fullscreen</div><div class="dropdown-item">Show Measurements</div></div></div>
-    <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select Model</div><div class="dropdown-item">Select Part</div><div class="dropdown-item">Select All</div><div class="dropdown-item">Deselect</div></div></div>
-    <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div><div class="dropdown-item">Fabric Panel</div><div class="dropdown-item">Properties</div></div></div>
+    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Comments</div><div class="dropdown-item">Show Grid</div><div class="dropdown-item">Snap to Grid</div></div></div>
+    <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric Image</div><div class="dropdown-item">Import Reference Image</div><div class="dropdown-item">Apply Texture to Model</div></div></div>
+    <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Fabric Filters</div><div class="dropdown-item">Color Filters</div></div></div>
+    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div><div class="dropdown-item">Fullscreen</div></div></div>
+    <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select Model</div><div class="dropdown-item">Select Part</div><div class="dropdown-item">Select All</div></div></div>
+    <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div><div class="dropdown-item">Fabric Panel</div></div></div>
   </div>
 
   <div class="workspace">
@@ -78,23 +78,38 @@ renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(3,2,4);
 controls.target.set(0,0,0);
+controls.enableDamping = true;
 
-// 1. AMBIENT LIGHT - so you can see everything
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+// LIGHT 1: AMBIENT - fills everything
+const ambientLight = new THREE.AmbientLight(0xDDB892, 0.4); // GOLD AMBIENT
 scene.add(ambientLight);
 
-// 2. KEY LIGHT - main light from front top
-const keyLight = new THREE.DirectionalLight(0xffffff, 1);
-keyLight.position.set(0, 3, 5);
+// LIGHT 2: KEY LIGHT - main spotlight from front
+const keyLight = new THREE.SpotLight(0xffffff, 2);
+keyLight.position.set(0, 4, 6);
+keyLight.angle = Math.PI / 6;
+keyLight.penumbra = 0.3;
 scene.add(keyLight);
 
-// 3. RIM LIGHT - gold light from behind for glow
-const rimLight = new THREE.PointLight(0xDDB892, 1.5, 10);
-rimLight.position.set(0, 0, -3);
+// LIGHT 3: RIM LIGHT - gold backlight for glow
+const rimLight = new THREE.PointLight(0xDDB892, 3, 15);
+rimLight.position.set(0, 0, -4);
 scene.add(rimLight);
 
-// MANNEQUIN - SWITCHED TO STANDARD MATERIAL SO LIGHTS WORK
-const goldMat = new THREE.MeshStandardMaterial({color:0xDDB892, wireframe:true}); // STANDARD NOT BASIC
+// LIGHT 4: FILL LIGHT - from side
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
+fillLight.position.set(-3, 2, 3);
+scene.add(fillLight);
+
+// MANNEQUIN - USE MESHSTANDARD + EMISSIVE SO IT GLOWS
+const goldMat = new THREE.MeshStandardMaterial({
+  color: 0xDDB892,
+  emissive: 0xDDB892,        // THIS MAKES IT GLOW
+  emissiveIntensity: 0.3,    // GLOW STRENGTH
+  metalness: 0.8,
+  roughness: 0.2,
+  wireframe: true
+});
 
 const cylGeo = new THREE.CylinderGeometry(0.5, 0.5, 2.5, 16, 1, true);
 const cylinder = new THREE.Mesh(cylGeo, goldMat);
@@ -105,6 +120,14 @@ const headGeo = new THREE.SphereGeometry(0.5, 16, 16);
 const sphere = new THREE.Mesh(headGeo, goldMat);
 sphere.position.y = 1.2;
 scene.add(sphere);
+
+// BACKGROUND GLOW PLANE
+const planeGeo = new THREE.PlaneGeometry(20, 20);
+const planeMat = new THREE.MeshStandardMaterial({color:0x14141A, emissive:0x1A1A22, emissiveIntensity:0.2});
+const bgPlane = new THREE.Mesh(planeGeo, planeMat);
+bgPlane.position.z = -5;
+bgPlane.receiveShadow = false;
+scene.add(bgPlane);
 
 function animate(){requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera)}
 animate();
