@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atelier Pro</title>
+<title>Workspace</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
@@ -29,6 +29,12 @@
   .panel-sec{margin-bottom:15px}
   .panel-sec h4{background:#1C1C20;padding:8px 10px;font-size:11px;color:#DDB892;margin-bottom:6px;border-radius:6px;font-weight:600}
   .layer-item{padding:5px 8px;font-size:12px;color:#A1A1AA}
+
+  /* NEW: VIEW BUTTONS */
+  .view-buttons{position:absolute;top:15px;left:50%;transform:translateX(-50%);display:flex;gap:8px;background:#141416;padding:6px;border-radius:10px;border:1px solid #23232A;z-index:100}
+  .view-btn{padding:6px 16px;background:#1C1C20;border:1px solid #23232A;color:#DDB892;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;transition:0.2s}
+  .view-btn:hover{background:#23232A}
+  .view-btn.active{background:#DDB892;color:#0B0B0D}
 </style>
 <script type="importmap">{"imports": {"three": "https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 </head>
@@ -39,7 +45,7 @@
     <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Comments</div><div class="dropdown-item">Show Grid</div><div class="dropdown-item">Snap to Grid</div><div class="dropdown-item">Auto Fit Fabric</div></div></div>
     <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric Image</div><div class="dropdown-item">Import Reference Image</div><div class="dropdown-item">Apply Texture to Model</div><div class="dropdown-item">Remove Texture</div></div></div>
     <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Fabric Filters</div><div class="dropdown-item">Color Filters</div><div class="dropdown-item">Pattern Filters</div></div></div>
-    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div><div class="dropdown-item">Fullscreen</div><div class="dropdown-item">Show Measurements</div></div></div>
+    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="setView('front')">Front View</div><div class="dropdown-item" onclick="setView('back')">Back View</div><div class="dropdown-item" onclick="setView('3d')">3D View</div><div class="divider"></div><div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div><div class="dropdown-item">Fullscreen</div><div class="dropdown-item">Show Measurements</div></div></div>
     <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select Model</div><div class="dropdown-item">Select Part</div><div class="dropdown-item">Select All</div><div class="dropdown-item">Deselect</div></div></div>
     <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div><div class="dropdown-item">Fabric Panel</div><div class="dropdown-item">Properties</div></div></div>
   </div>
@@ -54,7 +60,15 @@
       <div class="tool-icon">🎨</div>
     </div>
 
-    <div class="center"><canvas id="canvas"></canvas></div>
+    <div class="center">
+      <!-- NEW BUTTONS -->
+      <div class="view-buttons">
+        <button class="view-btn" onclick="setView('front')">Front</button>
+        <button class="view-btn" onclick="setView('back')">Back</button>
+        <button class="view-btn active" onclick="setView('3d')">3D</button>
+      </div>
+      <canvas id="canvas"></canvas>
+    </div>
 
     <div class="right-panel" id="rightPanel">
       <div class="panel-sec"><h4>LAYERS</h4><div class="layer-item">Dart 1</div><div class="layer-item">Dart 2</div><div class="layer-item">Background</div></div>
@@ -68,7 +82,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0B0B0D); // BLACK
+scene.background = new THREE.Color(0x0B0B0D);
 const canvas = document.getElementById('canvas');
 const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
@@ -77,11 +91,10 @@ renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0,0,5);
 controls.target.set(0,0,0);
+controls.enableRotate = true;
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-// EXACTLY LIKE YOUR SCREENSHOT: CYLINDER + SPHERE ON TOP
-const goldMat = new THREE.MeshBasicMaterial({color:0xDDB892, wireframe:true}); // GOLD WIREFRAME
-
+const goldMat = new THREE.MeshBasicMaterial({color:0xDDB892, wireframe:true});
 const cylGeo = new THREE.CylinderGeometry(0.5, 0.5, 2.5, 16, 1, true);
 const cylinder = new THREE.Mesh(cylGeo, goldMat);
 cylinder.position.y = -0.5;
@@ -89,7 +102,7 @@ scene.add(cylinder);
 
 const headGeo = new THREE.SphereGeometry(0.5, 16, 16);
 const sphere = new THREE.Mesh(headGeo, goldMat);
-sphere.position.y = 1.2; // ON TOP OF CYLINDER
+sphere.position.y = 1.2;
 scene.add(sphere);
 
 function animate(){requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera)}
@@ -100,6 +113,28 @@ window.addEventListener('resize', ()=>{
   camera.updateProjectionMatrix();
   renderer.setSize(canvas.clientWidth,canvas.clientHeight)
 });
+
+// NEW: VIEW CONTROLS
+window.setView = (view) => {
+  controls.enableRotate = (view === '3d'); // lock rotation for front/back
+  
+  if(view === 'front'){
+    camera.position.set(0,0,5);
+    camera.lookAt(0,0,0);
+  }
+  if(view === 'back'){
+    camera.position.set(0,0,-5);
+    camera.lookAt(0,0,0);
+  }
+  if(view === '3d'){
+    camera.position.set(3,2,4);
+    camera.lookAt(0,0,0);
+  }
+  
+  // Update button active state
+  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
 
 window.togglePanel = (side) => {
   const el = document.getElementById(side === 'left' ? 'leftToolbar' : 'rightPanel');
