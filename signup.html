@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up - Creativity 3D</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"> <!-- CSS CONNECTED -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -30,12 +31,11 @@
         const password = document.getElementById('password').value;
         
         try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          await createUserWithEmailAndPassword(auth, email, password);
           alert("Account Created Successfully!");
-          window.location.href = "home.html";  // FIXED: go to home page
+          window.location.href = "home.html"; // goes to landing page
         } catch (error) {
           alert("Error: " + error.message);
-          console.error(error);
         }
       });
     });
