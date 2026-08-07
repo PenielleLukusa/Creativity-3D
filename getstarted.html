@@ -7,52 +7,51 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
   body{background:#0F0F0F;color:#F5F5F5}
-  .nav{padding:12px 40px;display:flex;justify-content:center;gap:15px;background:#1A1A1A;border-bottom:1px solid #2a2a2a}
-  .nav button{background:#2a2a2a;color:#aaa;border:none;padding:6px 18px;border-radius:20px;cursor:pointer;font-size:0.85rem}
-  .nav button.active{background:#E5E5E5;color:#0F0F0F}
-  
-  .container{background:#E8E8E8;color:#0F0F0F;max-width:1100px;margin:30px auto;padding:30px;border-radius:12px}
+ .nav{padding:12px 40px;display:flex;justify-content:center;gap:15px;background:#1A1A1A;border-bottom:1px solid #2a2a2a}
+ .nav button{background:#2a2a2a;color:#aaa;border:none;padding:6px 18px;border-radius:20px;cursor:pointer;font-size:0.85rem}
+ .nav button.active{background:#E5E5E5;color:#0F0F0F}
+
+ .container{background:#E8E8E8;color:#0F0F0F;max-width:1100px;margin:30px auto;padding:30px;border-radius:12px}
   h1{font-size:1.1rem;margin-bottom:20px;font-weight:500}
   h2{text-align:center;margin:15px 0;font-weight:500;font-size:1.1rem}
 
-  /* STEP 2: CHOOSE MODEL */
-  .model-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;margin-bottom:30px}
-  .model-card{background:#D0D0D0;border-radius:8px;padding:10px;cursor:pointer;border:2px solid transparent;transition:0.3s;text-align:center}
-  .model-card:hover{border-color:#0F0F0F}
-  .model-preview{width:100%;height:280px;background:#B0B0B0;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .model-preview img{width:100%;height:100%;object-fit:contain}
-  .model-card button{background:#0F0F0F;color:#E5E5E5;border:none;padding:6px 20px;border-radius:4px;margin-top:8px;cursor:pointer;font-size:0.8rem}
-  
-  .customize-link{text-align:center;margin-top:20px}
-  .customize-link button{background:transparent;border:none;color:#0F0F0F;text-decoration:underline;cursor:pointer;font-size:0.9rem}
+ .model-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;margin-bottom:30px}
+ .model-card{background:#D0D0D0;border-radius:8px;padding:10px;cursor:pointer;border:2px solid transparent;transition:0.3s;text-align:center}
+ .model-card:hover{border-color:#0F0F0F}
+ .model-preview{width:100%;height:280px;background:#B0B0B0;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+ .model-preview img{width:100%;height:100%;object-fit:contain}
+ .model-card button{background:#0F0F0F;color:#E5E5E5;border:none;padding:6px 20px;border-radius:4px;margin-top:8px;cursor:pointer;font-size:0.8rem}
 
-  /* STEP 3: CUSTOMIZE */
-  .customize-wrapper{display:none;background:#E8E8E8;color:#0F0F0F;padding:20px;border-radius:12px}
-  .customize-header{display:flex;align-items:center;gap:15px;margin-bottom:20px}
-  .customize-header button{background:#D0D0D0;border:none;padding:5px 10px;border-radius:4px;cursor:pointer}
-  
-  .customize-body{display:flex;gap:20px}
-  .side-left{width:160px;background:#D0D0D0;padding:15px;border-radius:8px}
-  .side-left .tabs{display:flex;gap:5px;margin-bottom:15px}
-  .side-left .tabs button{flex:1;background:#B0B0B0;border:none;padding:6px;border-radius:4px;font-size:0.8rem;cursor:pointer}
-  .side-left .gender-btn{width:100%;background:#B0B0B0;border:none;padding:8px;border-radius:4px;margin:4px 0;cursor:pointer;font-size:0.85rem;text-align:left}
-  .side-left .gender-btn.active{background:#0F0F0F;color:#E5E5E5}
-  .btn-create{width:100%;background:#B0B0B0;border:none;padding:10px;border-radius:4px;margin-top:20px;cursor:pointer}
-  
-  .viewer{flex:1;background:#D0D0D0;border-radius:8px;display:flex;align-items:center;justify-content:center;height:450px}
-  .viewer img{max-height:100%;object-fit:contain}
-  
-  .side-right{width:220px;background:#D0D0D0;padding:15px;border-radius:8px}
-  .side-right .header{display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:10px;font-weight:600}
-  .measurements input{width:60px;margin:4px 0;padding:4px;background:#E8E8E8;border:1px solid #999;border-radius:3px;color:#0F0F0F;font-size:0.75rem}
-  .measurements .row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
-  .measurements label{font-size:0.75rem}
-  .btn-more{width:100%;background:#B0B0B0;border:none;padding:6px;border-radius:4px;margin-top:10px;cursor:pointer;font-size:0.8rem}
+ .customize-link{text-align:center;margin-top:20px}
+ .customize-link button{background:transparent;border:none;color:#0F0F0F;text-decoration:underline;cursor:pointer;font-size:0.9rem}
+
+ .customize-wrapper{display:none;background:#E8E8E8;color:#0F0F0F;padding:20px;border-radius:12px}
+ .customize-header{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+ .customize-header button{background:#D0D0D0;border:none;padding:5px 10px;border-radius:4px;cursor:pointer}
+
+ .customize-body{display:flex;gap:20px;flex-wrap:wrap}
+ .side-left{width:160px;background:#D0D0D0;padding:15px;border-radius:8px}
+ .side-left.tabs{display:flex;gap:5px;margin-bottom:15px}
+ .side-left.tabs button{flex:1;background:#B0B0B0;border:none;padding:6px;border-radius:4px;font-size:0.8rem;cursor:pointer}
+ .side-left.gender-btn{width:100%;background:#B0B0B0;border:none;padding:8px;border-radius:4px;margin:4px 0;cursor:pointer;font-size:0.85rem;text-align:left}
+ .side-left.gender-btn.active{background:#0F0F0F;color:#E5E5E5}
+ .btn-create{width:100%;background:#0F0F0F;color:#E5E5E5;border:none;padding:10px;border-radius:4px;margin-top:20px;cursor:pointer;font-weight:600}
+
+ .viewer{flex:1;min-width:300px;background:#D0D0D0;border-radius:8px;display:flex;align-items:center;justify-content:center;height:450px}
+ .viewer img{max-height:100%;object-fit:contain}
+
+ .side-right{width:220px;background:#D0D0D0;padding:15px;border-radius:8px}
+ .side-right.header{display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:10px;font-weight:600}
+ .measurements input{width:60px;margin:4px 0;padding:4px;background:#E8E8E8;border:1px solid #999;border-radius:3px;color:#0F0F0F;font-size:0.75rem}
+ .measurements.row{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+ .measurements label{font-size:0.75rem}
+ .btn-more{width:100%;background:#B0B0B0;border:none;padding:6px;border-radius:4px;margin-top:10px;cursor:pointer;font-size:0.8rem}
+  @media(max-width:1000px){.customize-body{flex-direction:column}}
 </style>
 </head>
 <body>
   <div class="nav">
-    <button class="active">Home</button>
+    <button class="active" onclick="window.location.href='home.html'">Home</button>
     <button>Explore</button>
     <button>Gallery</button>
     <button>MarketPlace</button>
@@ -81,10 +80,9 @@
     </div>
   </div>
 
-  <!-- STEP 3: CUSTOMIZE PAGE -->
   <div class="container customize-wrapper" id="customizePage">
     <div class="customize-header">
-      <button onclick="showChoose()">‹</button>
+      <button onclick="showChoose()">‹ Back</button>
       <h2>Customize your own model</h2>
     </div>
     <div class="customize-body">
@@ -93,9 +91,9 @@
           <button>Skin</button>
           <button>Size</button>
         </div>
-        <button class="gender-btn" onclick="selectGender('male')">Male</button>
-        <button class="gender-btn active" onclick="selectGender('female')">Female</button>
-        <button class="gender-btn" onclick="selectGender('nonbinary')">Non-binary</button>
+        <button class="gender-btn" onclick="selectGender('male', event)">Male</button>
+        <button class="gender-btn active" onclick="selectGender('female', event)">Female</button>
+        <button class="gender-btn" onclick="selectGender('nonbinary', event)">Non-binary</button>
         <button class="btn-create" id="createBtn">Create</button>
       </div>
 
@@ -107,14 +105,14 @@
           <span>Inches</span>
         </div>
         <div class="measurements">
-          <div class="row"><label>Bust/Chest Circumference</label><input placeholder="0"></div>
-          <div class="row"><label>Under-Bust Circumference</label><input placeholder="0"></div>
-          <div class="row"><label>Waist Circumference</label><input placeholder="0"></div>
-          <div class="row"><label>Hip Circumference</label><input placeholder="0"></div>
-          <div class="row"><label>Neck Circumference</label><input placeholder="0"></div>
-          <div class="row"><label>Shoulder Width</label><input placeholder="0"></div>
-          <div class="row"><label>Across Back Width</label><input placeholder="0"></div>
-          <div class="row"><label>Total Height</label><input placeholder="0"></div>
+          <div class="row"><label>Bust/Chest</label><input placeholder="0"></div>
+          <div class="row"><label>Under-Bust</label><input placeholder="0"></div>
+          <div class="row"><label>Waist</label><input placeholder="0"></div>
+          <div class="row"><label>Hip</label><input placeholder="0"></div>
+          <div class="row"><label>Neck</label><input placeholder="0"></div>
+          <div class="row"><label>Shoulder</label><input placeholder="0"></div>
+          <div class="row"><label>Back Width</label><input placeholder="0"></div>
+          <div class="row"><label>Height</label><input placeholder="0"></div>
         </div>
         <button class="btn-more">More options</button>
       </div>
@@ -135,13 +133,13 @@ function showChoose() {
 }
 
 function goToWorkspace(model) {
-  window.location.href = `workspace.html?model=${model}`;
+  window.location.href = `./workspace.html?model=${model}`;
 }
 
-function selectGender(gender) {
+function selectGender(gender, e) {
   selectedGender = gender;
   document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  e.target.classList.add('active');
 }
 
 document.getElementById('createBtn').addEventListener('click', () => {
@@ -156,8 +154,8 @@ document.getElementById('createBtn').addEventListener('click', () => {
   params.append('shoulder', inputs[5].value);
   params.append('back', inputs[6].value);
   params.append('height', inputs[7].value);
-  
-  window.location.href = `workspace.html?${params.toString()}`;
+
+  window.location.href = `./workspace.html?${params.toString()}`;
 });
 </script>
 </body>
