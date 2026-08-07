@@ -7,31 +7,26 @@
   *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
   body{background:#1a1a1a;color:#ccc;height:100vh;display:flex;flex-direction:column;overflow:hidden}
   
-  /* TOPBAR - LIGHT GRAY */
-  .topbar{background:#3a3a3a;padding:0 8px;display:flex;gap:0;border-bottom:1px solid #222;font-size:12px;z-index:100}
-  .menu{position:relative}
-  .menu-title{padding:6px 12px;cursor:pointer;color:#eee}
+  /* TOPBAR */
+  .topbar{background:#3a3a3a;padding:0 8px;display:flex;gap:0;border-bottom:1px solid #222;font-size:12px;z-index:100;flex-wrap:wrap}
+  .menu{position:relative;flex-shrink:0}
+  .menu-title{padding:6px 12px;cursor:pointer;color:#eee;white-space:nowrap}
   .menu:hover .menu-title{background:#555}
-  .dropdown{position:absolute;top:100%;left:0;background:#2a2a2a;border:1px solid #444;min-width:180px;display:none;padding:4px 0;box-shadow:0 4px 10px rgba(0,0,0,0.5)}
+  .dropdown{position:absolute;top:100%;left:0;background:#2a2a2a;border:1px solid #444;min-width:220px;display:none;padding:4px 0;box-shadow:0 4px 10px rgba(0,0,0,0.5)}
   .menu:hover .dropdown{display:block}
   .dropdown-item{padding:5px 15px;cursor:pointer;color:#ddd;font-size:12px}
   .dropdown-item:hover{background:#4a90e2;color:#fff}
+  .divider{height:1px;background:#444;margin:4px 0}
   
-  /* MAIN LAYOUT */
+  /* LAYOUT */
   .workspace{display:flex;flex:1}
-  
-  /* LEFT TOOLBAR - DARK GRAY */
   .left-toolbar{width:60px;background:#2d2d2d;border-right:1px solid #222;padding:8px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
   .tool-icon{width:40px;height:40px;background:#3a3a3a;border:1px solid #444;border-radius:4px;color:#ccc;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
   .tool-icon:hover{background:#4a90e2;color:#fff}
   .tool-icon.active{background:#4a90e2;color:#fff}
-  
-  /* CENTER CANVAS - DARK BLUE */
   .center{flex:1;background:#1a2a4a;position:relative;overflow:hidden}
   #canvas{width:100%;height:100%;display:block}
-  
-  /* RIGHT PANEL */
-  .right-panel{width:250px;background:#2d2d2d;border-left:1px solid #222;padding:10px}
+  .right-panel{width:250px;background:#2d2d2d;border-left:1px solid #222;padding:10px;overflow-y:auto}
   .panel-sec{margin-bottom:15px}
   .panel-sec h4{background:#3a3a3a;padding:6px 8px;font-size:11px;color:#eee;margin-bottom:5px}
   .layer-item{padding:4px 8px;font-size:12px;color:#ccc}
@@ -40,18 +35,87 @@
 </head>
 <body>
   <div class="topbar">
-    <div class="menu"><div class="menu-title">File</div><div class="dropdown"><div class="dropdown-item">New</div><div class="dropdown-item">Open</div><div class="dropdown-item">Save as GLB</div></div></div>
-    <div class="menu"><div class="menu-title">Edit</div><div class="dropdown"><div class="dropdown-item">Undo</div><div class="dropdown-item">Redo</div><div class="dropdown-item">Cut</div><div class="dropdown-item">Copy</div><div class="dropdown-item">Paste</div></div></div>
-    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Commands</div><div class="dropdown-item">Show 3D</div><div class="dropdown-item">Snap to Grid</div></div></div>
-    <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Texture</div></div></div>
-    <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Apply Fabric Texture</div></div></div>
-    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item">Top</div><div class="dropdown-item">Front</div><div class="dropdown-item">Perspective</div></div></div>
-    <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select All</div></div></div>
-    <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div><div class="dropdown-item">Properties</div></div></div>
+    <div class="menu">
+      <div class="menu-title">File</div>
+      <div class="dropdown">
+        <div class="dropdown-item">New Design</div>
+        <div class="dropdown-item">Open</div>
+        <div class="dropdown-item">Save</div>
+        <div class="dropdown-item">Save as GLB</div>
+        <div class="divider"></div>
+        <div class="dropdown-item" onclick="exportPNG()">Export as PNG</div>
+        <div class="dropdown-item">Export as Video</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="menu-title">Edit</div>
+      <div class="dropdown">
+        <div class="dropdown-item">Undo</div>
+        <div class="dropdown-item">Redo</div>
+        <div class="divider"></div>
+        <div class="dropdown-item">Cut</div>
+        <div class="dropdown-item">Copy</div>
+        <div class="dropdown-item">Paste</div>
+        <div class="dropdown-item">Delete</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="menu-title">Layout</div>
+      <div class="dropdown">
+        <div class="dropdown-item">Show Comments</div>
+        <div class="dropdown-item">Show Grid</div>
+        <div class="dropdown-item">Snap to Grid</div>
+        <div class="dropdown-item">Auto Fit Fabric</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="menu-title">Image</div>
+      <div class="dropdown">
+        <div class="dropdown-item">Import Fabric Image</div>
+        <div class="dropdown-item">Import Reference Image</div>
+        <div class="dropdown-item">Apply Texture to Model</div>
+        <div class="dropdown-item">Remove Texture</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="menu-title">Filter</div>
+      <div class="dropdown">
+        <div class="dropdown-item">Fabric Filters</div>
+        <div class="dropdown-item">Color Filters</div>
+        <div class="dropdown-item">Pattern Filters</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="menu-title">View</div>
+      <div class="dropdown">
+        <div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div>
+        <div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div>
+        <div class="dropdown-item">Fullscreen</div>
+        <div class="dropdown-item">Show Measurements</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="menu-title">Select</div>
+      <div class="dropdown">
+        <div class="dropdown-item">Select Model</div>
+        <div class="dropdown-item">Select Part</div>
+        <div class="dropdown-item">Select All</div>
+        <div class="dropdown-item">Deselect</div>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="menu-title">Window</div>
+      <div class="dropdown">
+        <div class="dropdown-item">AI Chat</div>
+        <div class="dropdown-item">Layers</div>
+        <div class="dropdown-item">Fabric Panel</div>
+        <div class="dropdown-item">Properties</div>
+      </div>
+    </div>
   </div>
 
   <div class="workspace">
-    <div class="left-toolbar">
+    <div class="left-toolbar" id="leftToolbar">
       <div class="tool-icon active" title="Select">↖</div>
       <div class="tool-icon" title="Pan">✋</div>
       <div class="tool-icon" title="Rotate">↻</div>
@@ -62,19 +126,10 @@
 
     <div class="center"><canvas id="canvas"></canvas></div>
 
-    <div class="right-panel">
-      <div class="panel-sec">
-        <h4>LAYERS</h4>
-        <div class="layer-item">Dart 1</div>
-        <div class="layer-item">Dart 2</div>
-        <div class="layer-item">Background</div>
-      </div>
-      <div class="panel-sec">
-        <h4>FABRIC PANEL</h4>
-      </div>
-      <div class="panel-sec">
-        <h4>TEXTURE PANEL</h4>
-      </div>
+    <div class="right-panel" id="rightPanel">
+      <div class="panel-sec"><h4>LAYERS</h4><div class="layer-item">Dart 1</div><div class="layer-item">Dart 2</div><div class="layer-item">Background</div></div>
+      <div class="panel-sec"><h4>FABRIC PANEL</h4></div>
+      <div class="panel-sec"><h4>TEXTURE PANEL</h4></div>
     </div>
   </div>
 
@@ -83,7 +138,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x1a2a4a); // DARK BLUE like your screenshot
+scene.background = new THREE.Color(0x1a2a4a);
 const canvas = document.getElementById('canvas');
 const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
@@ -92,19 +147,16 @@ renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0,1.5,4);
 controls.target.set(0,1,0);
-
-// LIGHTS - so wireframe is visible
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-// CYLINDER WIREFRAME - EXACTLY LIKE YOUR VIDEO
-const geometry = new THREE.CylinderGeometry(0.4, 0.4, 2, 16, 1, true);
-const material = new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true});
-const cylinder = new THREE.Mesh(geometry, material);
+// WIREFRAME CYLINDER + HEAD LIKE YOUR VIDEO
+const cylGeo = new THREE.CylinderGeometry(0.4, 0.4, 2, 16, 1, true);
+const wireMat = new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true});
+const cylinder = new THREE.Mesh(cylGeo, wireMat);
 scene.add(cylinder);
 
-// ADD HEAD ON TOP LIKE IN YOUR LAST FRAME
 const headGeo = new THREE.SphereGeometry(0.4, 16, 16);
-const head = new THREE.Mesh(headGeo, material);
+const head = new THREE.Mesh(headGeo, wireMat);
 head.position.y = 1.4;
 scene.add(head);
 
@@ -116,6 +168,19 @@ window.addEventListener('resize', ()=>{
   camera.updateProjectionMatrix();
   renderer.setSize(canvas.clientWidth,canvas.clientHeight)
 });
+
+window.togglePanel = (side) => {
+  const el = document.getElementById(side === 'left' ? 'leftToolbar' : 'rightPanel');
+  el.style.display = el.style.display === 'none'? 'flex' : 'none';
+  if(side === 'right') el.style.display = el.style.display === 'none'? 'none' : 'block';
+}
+
+window.exportPNG = () => {
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = 'design.png';
+  link.click();
+}
 </script>
 </body>
 </html>
