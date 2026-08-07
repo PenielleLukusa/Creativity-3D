@@ -24,17 +24,11 @@
   .tool-icon:hover{background:#DDB892;color:#0B0B0D}
   .tool-icon.active{background:#DDB892;color:#0B0B0D}
   .center{flex:1;background:#0B0B0D;position:relative}
-  #canvas{width:100%;height:100%;display:block;background:#0B0B0D} /* FORCED BG */
+  #canvas{width:100%;height:100%;display:block;background:#0B0B0D}
   .right-panel{width:250px;background:#141416;border-left:1px solid #23232A;padding:12px;overflow-y:auto}
   .panel-sec{margin-bottom:15px}
   .panel-sec h4{background:#1C1C20;padding:8px 10px;font-size:11px;color:#DDB892;margin-bottom:6px;border-radius:6px;font-weight:600}
   .layer-item{padding:5px 8px;font-size:12px;color:#A1A1AA}
-
-  /* FIXED: MOVED BUTTONS TO TOP RIGHT SO THEY DONT HIDE MODEL */
-  .view-buttons{position:absolute;top:10px;right:10px;display:flex;gap:6px;background:#141416;padding:5px;border-radius:10px;border:1px solid #23232A;z-index:100}
-  .view-btn{padding:5px 12px;background:#1C1C20;border:1px solid #23232A;color:#DDB892;border-radius:6px;cursor:pointer;font-size:11px;font-weight:500}
-  .view-btn:hover{background:#23232A}
-  .view-btn.active{background:#DDB892;color:#0B0B0D}
 </style>
 <script type="importmap">{"imports": {"three": "https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 </head>
@@ -45,7 +39,7 @@
     <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Comments</div><div class="dropdown-item">Show Grid</div><div class="dropdown-item">Snap to Grid</div><div class="dropdown-item">Auto Fit Fabric</div></div></div>
     <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric Image</div><div class="dropdown-item">Import Reference Image</div><div class="dropdown-item">Apply Texture to Model</div><div class="dropdown-item">Remove Texture</div></div></div>
     <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Fabric Filters</div><div class="dropdown-item">Color Filters</div><div class="dropdown-item">Pattern Filters</div></div></div>
-    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="setView('front')">Front View</div><div class="dropdown-item" onclick="setView('back')">Back View</div><div class="dropdown-item" onclick="setView('3d')">3D View</div><div class="divider"></div><div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div><div class="dropdown-item">Fullscreen</div><div class="dropdown-item">Show Measurements</div></div></div>
+    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div><div class="dropdown-item">Fullscreen</div><div class="dropdown-item">Show Measurements</div></div></div>
     <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select Model</div><div class="dropdown-item">Select Part</div><div class="dropdown-item">Select All</div><div class="dropdown-item">Deselect</div></div></div>
     <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div><div class="dropdown-item">Fabric Panel</div><div class="dropdown-item">Properties</div></div></div>
   </div>
@@ -60,14 +54,7 @@
       <div class="tool-icon">🎨</div>
     </div>
 
-    <div class="center">
-      <div class="view-buttons">
-        <button class="view-btn" onclick="setView('front')">Front</button>
-        <button class="view-btn" onclick="setView('back')">Back</button>
-        <button class="view-btn active" onclick="setView('3d')">3D</button>
-      </div>
-      <canvas id="canvas"></canvas>
-    </div>
+    <div class="center"><canvas id="canvas"></canvas></div>
 
     <div class="right-panel" id="rightPanel">
       <div class="panel-sec"><h4>LAYERS</h4><div class="layer-item">Dart 1</div><div class="layer-item">Dart 2</div><div class="layer-item">Background</div></div>
@@ -81,18 +68,37 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0B0B0D);
+scene.background = new THREE.Color(0x0B0B0D); // BLACK
+scene.fog = new THREE.Fog(0x0B0B0D, 5, 15); // FOG GLOW
+
 const canvas = document.getElementById('canvas');
 const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
 renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-renderer.setClearColor(0x0B0B0D, 1); // FORCE BLACK
+renderer.setClearColor(0x0B0B0D, 1);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-camera.position.set(0,0,5);
+camera.position.set(3,2,4);
 controls.target.set(0,0,0);
-scene.add(new THREE.AmbientLight(0xffffff, 1.5)); // BRIGHTER LIGHT
+controls.enableDamping = true;
 
+// STUDIO LIGHTING SETUP
+const ambient = new THREE.AmbientLight(0xDDB892, 0.3); // WARM AMBIENT
+scene.add(ambient);
+
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.2); // MAIN LIGHT FROM FRONT
+keyLight.position.set(2, 3, 5);
+scene.add(keyLight);
+
+const rimLight = new THREE.DirectionalLight(0xDDB892, 0.8); // GOLD RIM LIGHT FROM BACK
+rimLight.position.set(-3, 2, -3);
+scene.add(rimLight);
+
+const fillLight = new THREE.PointLight(0xDDB892, 0.5, 10); // GLOW AROUND MANNEQUIN
+fillLight.position.set(0, 0, 2);
+scene.add(fillLight);
+
+// MANNEQUIN - GOLD WIREFRAME
 const goldMat = new THREE.MeshBasicMaterial({color:0xDDB892, wireframe:true});
 const cylGeo = new THREE.CylinderGeometry(0.5, 0.5, 2.5, 16, 1, true);
 const cylinder = new THREE.Mesh(cylGeo, goldMat);
@@ -104,6 +110,13 @@ const sphere = new THREE.Mesh(headGeo, goldMat);
 sphere.position.y = 1.2;
 scene.add(sphere);
 
+// BACKGROUND GLOW PLANE
+const planeGeo = new THREE.PlaneGeometry(10, 10);
+const planeMat = new THREE.MeshBasicMaterial({color:0x1a1a2a, side:THREE.DoubleSide});
+const bgPlane = new THREE.Mesh(planeGeo, planeMat);
+bgPlane.position.z = -3;
+scene.add(bgPlane);
+
 function animate(){requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera)}
 animate();
 
@@ -112,16 +125,6 @@ window.addEventListener('resize', ()=>{
   camera.updateProjectionMatrix();
   renderer.setSize(canvas.clientWidth,canvas.clientHeight)
 });
-
-window.setView = (view) => {
-  controls.enableRotate = (view === '3d');
-  if(view === 'front'){camera.position.set(0,0,5)}
-  if(view === 'back'){camera.position.set(0,0,-5)}
-  if(view === '3d'){camera.position.set(3,2,4)}
-  camera.lookAt(0,0,0);
-  document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-}
 
 window.togglePanel = (side) => {
   const el = document.getElementById(side === 'left' ? 'leftToolbar' : 'rightPanel');
