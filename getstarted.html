@@ -16,19 +16,18 @@
  .nav button{background:transparent;border:none;color:#A0A0A0;padding:8px 20px;border-radius:20px;cursor:pointer;font-size:0.9rem}
  .nav button.active{background:#DDB892;color:#0F0F0F;font-weight:600}
  
- /* CHANGED: Gold container now */
  .container{background:#DDB892;color:#0F0F0F;max-width:1200px;margin:30px auto;padding:40px;border-radius:16px;box-shadow:0 8px 30px rgba(221,184,146,0.3)}
   h1{font-size:1.3rem;margin-bottom:20px;font-weight:600}
   h2{text-align:center;margin:10px 0 30px;font-weight:600;font-size:1.5rem}
  
- /* CHANGED: Bigger cards + 3 columns with more gap */
  .model-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:30px;margin-bottom:30px}
  .model-card{background:#0F0F0F;border-radius:12px;padding:20px;text-align:center;border:2px solid transparent;transition:0.3s;cursor:pointer}
- .model-card:hover{border-color:#0F0F0F;transform:translateY(-5px)}
+ .model-card:hover{border-color:#DDB892;transform:translateY(-5px)}
  
- /* CHANGED: Taller preview */
- .model-preview{width:100%;height:340px;background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:1rem;color:#DDB892;overflow:hidden}
- .model-preview img{width:100%;height:100%;object-fit:cover}
+ /* MANNEQUIN STYLE */
+ .model-preview{width:100%;height:340px;background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+ .mannequin{width:120px;height:300px;fill:#DDB892;opacity:0.9}
+ .model-card:hover .mannequin{fill:#E8DCCA}
  
  .model-card button{background:#DDB892;color:#0F0F0F;border:none;padding:12px 20px;border-radius:8px;margin-top:15px;cursor:pointer;font-size:1rem;width:100%;font-weight:700;transition:0.2s}
  .model-card button:hover{background:#E8DCCA}
@@ -56,21 +55,47 @@
     <h1>Get started</h1>
     <h2>Choose your model</h2>
     <div class="model-grid">
+      <!-- MANNEQUIN 1: Female -->
       <div class="model-card">
         <div class="model-preview">
-          <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=500&h=340&fit=crop" alt="Female Model">
+          <svg class="mannequin" viewBox="0 0 100 300">
+            <ellipse cx="50" cy="30" rx="20" ry="20"/> <!-- Head -->
+            <rect x="42" y="50" width="16" height="60" rx="8"/> <!-- Torso -->
+            <rect x="30" y="110" width="12" height="80" rx="6"/> <!-- Left Leg -->
+            <rect x="58" y="110" width="12" height="80" rx="6"/> <!-- Right Leg -->
+            <rect x="20" y="55" width="15" height="50" rx="7"/> <!-- Left Arm -->
+            <rect x="65" y="55" width="15" height="50" rx="7"/> <!-- Right Arm -->
+          </svg>
         </div>
         <button onclick="window.location.href='workspace.html'">Select</button>
       </div>
+
+      <!-- MANNEQUIN 2: Slim -->
       <div class="model-card">
         <div class="model-preview">
-          <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=500&h=340&fit=crop" alt="Female Model 2">
+          <svg class="mannequin" viewBox="0 0 100 300">
+            <ellipse cx="50" cy="30" rx="18" ry="18"/>
+            <rect x="44" y="50" width="12" height="60" rx="6"/>
+            <rect x="33" y="110" width="10" height="80" rx="5"/>
+            <rect x="57" y="110" width="10" height="80" rx="5"/>
+            <rect x="24" y="55" width="13" height="50" rx="6"/>
+            <rect x="63" y="55" width="13" height="50" rx="6"/>
+          </svg>
         </div>
         <button onclick="window.location.href='workspace.html'">Select</button>
       </div>
+
+      <!-- MANNEQUIN 3: Curvy -->
       <div class="model-card">
         <div class="model-preview">
-          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&h=340&fit=crop" alt="Female Model 3">
+          <svg class="mannequin" viewBox="0 0 100 300">
+            <ellipse cx="50" cy="30" rx="22" ry="22"/>
+            <rect x="40" y="50" width="20" height="60" rx="10"/>
+            <rect x="28" y="110" width="14" height="80" rx="7"/>
+            <rect x="58" y="110" width="14" height="80" rx="7"/>
+            <rect x="18" y="55" width="17" height="50" rx="8"/>
+            <rect x="65" y="55" width="17" height="50" rx="8"/>
+          </svg>
         </div>
         <button onclick="window.location.href='workspace.html'">Select</button>
       </div>
