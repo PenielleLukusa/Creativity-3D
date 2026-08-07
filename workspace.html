@@ -10,10 +10,10 @@
  .topbar{background:#1A1A1A;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #2a2a2a;font-size:0.9rem;position:relative;z-index:100}
  .menu{position:relative}
  .menu-title{padding:10px 14px;cursor:pointer;color:#DDB892;transition:0.2s}
- .menu:hover.menu-title{background:#DDB892;color:#0F0F0F}
+ .menu:hover.menu-title{background:#DDB892;color:#0F0F0F} /* FIXED SPACE */
  .dropdown{position:absolute;top:100%;left:0;background:#2A2A2A;border:1px solid #333;border-radius:6px;min-width:200px;display:none;padding:5px 0;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
- .menu:hover.dropdown{display:block}
- .dropdown-item{padding:8px 15px;cursor:pointer;color:#F5F5F5;font-size:0.85rem} /* cursor:pointer so you can click */
+ .menu:hover.dropdown{display:block} /* FIXED SPACE */
+ .dropdown-item{padding:8px 15px;cursor:pointer;color:#F5F5F5;font-size:0.85rem}
  .dropdown-item:hover{background:#DDB892;color:#0F0F0F}
  .dropdown-divider{height:1px;background:#333;margin:5px 0}
 
@@ -47,10 +47,13 @@
         <div class="dropdown-item" onclick="savePNG()">Export as PNG</div>
       </div>
     </div>
-    <div class="menu"><div class="menu-title">Edit</div><div class="dropdown"><div class="dropdown-item">Undo</div></div></div>
+    <div class="menu"><div class="menu-title">Edit</div><div class="dropdown"><div class="dropdown-item">Undo</div><div class="dropdown-item">Redo</div></div></div>
     <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Grid</div></div></div>
+    <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric</div></div></div>
+    <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Colors</div></div></div>
     <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Toggle Left</div><div class="dropdown-item" onclick="togglePanel('right')">Toggle Right</div></div></div>
-    <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div></div></div>
+    <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select All</div></div></div>
+    <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div></div></div>
   </div>
 
   <div class="workspace">
@@ -63,8 +66,9 @@
     </div>
     <div class="center"><canvas id="canvas"></canvas></div>
     <div class="right-panel" id="rightPanel">
-      <div class="section"><h4>Layers</h4><p>Mannequin</p></div>
-      <div class="section"><h4>Fabric Panel</h4><div class="fabric-grid"><div class="fabric-swatch" style="background:#DDB892"></div><div class="fabric-swatch" style="background:#8B5A2B"></div></div></div>
+      <div class="section"><h4>Layers</h4><p>Mannequin</p><p>Dart 1</p></div>
+      <div class="section"><h4>Fabric Panel</h4><div class="fabric-grid"><div class="fabric-swatch" style="background:#DDB892"></div><div class="fabric-swatch" style="background:#8B5A2B"></div><div class="fabric-swatch" style="background:#EC4899"></div><div class="fabric-swatch" style="background:#444"></div></div></div>
+      <div class="section"><h4>Texture Panel</h4><div class="fabric-grid"><div class="fabric-swatch"></div><div class="fabric-swatch"></div><div class="fabric-swatch"></div><div class="fabric-swatch"></div></div></div>
       <button class="btn">Marketplace</button>
     </div>
   </div>
@@ -72,17 +76,17 @@
 <script type="module">
   import * as THREE from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-  import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'; // FOR SAVING
+  import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x222);
   const canvas = document.getElementById('canvas');
   const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({canvas:canvas,antialias:true,preserveDrawingBuffer:true}); // preserveDrawingBuffer for PNG
+  const renderer = new THREE.WebGLRenderer({canvas:canvas,antialias:true,preserveDrawingBuffer:true});
   renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; // smoother mouse drag
+  controls.enableDamping = true;
   camera.position.set(0,1.5,4);
   controls.target.set(0,1.2,0);
 
@@ -91,7 +95,7 @@
   light.position.set(2,3,2);
   scene.add(light);
 
-  // HUMAN MANNEQUIN
+  // HUMAN MANNEQUIN - NO AUTO SPIN
   const mat = new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true});
   const human = new THREE.Group();
   const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 1.2, 16), mat);
@@ -108,7 +112,7 @@
 
   function animate(){
     requestAnimationFrame(animate);
-    // REMOVED: human.rotation.y += 0.002; <-- NO MORE AUTO SPIN
+    // NO AUTO ROTATION HERE
     controls.update();
     renderer.render(scene,camera);
   }
@@ -124,8 +128,7 @@
     panel.style.display = panel.style.display === 'none'? 'block' : 'none';
   }
 
-  // ====== SAVE FUNCTIONS ======
-  // 1. Save as GLB - 3D file
+  // SAVE FUNCTIONS
   window.saveGLB = () => {
     const exporter = new GLTFExporter();
     exporter.parse(human, (glb) => {
@@ -135,18 +138,15 @@
       link.download = 'mannequin.glb';
       link.click();
     }, {binary: true});
-    alert("GLB file downloading...");
   }
 
-  // 2. Save as PNG - Screenshot
   window.savePNG = () => {
-    renderer.render(scene, camera); // force render 1 frame
+    renderer.render(scene, camera);
     const dataURL = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = dataURL;
     link.download = 'screenshot.png';
     link.click();
-    alert("PNG screenshot downloading...");
   }
 </script>
 </body>
