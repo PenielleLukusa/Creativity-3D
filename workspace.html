@@ -6,18 +6,17 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
   body{background:#0F0F0F;color:#F5F5F5;height:100vh;display:flex;flex-direction:column;overflow:hidden}
- .topbar{background:#1A1A1A;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #2a2a2a;font-size:0.9rem;z-index:100}
- .menu{position:relative;}.menu-title{padding:10px 14px;cursor:pointer;color:#DDB892;}.menu:hover.menu-title{background:#DDB892;color:#0F0F0F;}
- .dropdown{position:absolute;top:100%;left:0;background:#2A2A2A;border:1px solid #333;border-radius:6px;min-width:200px;display:none;padding:5px 0;}.menu:hover.dropdown{display:block}
- .dropdown-item{padding:8px 15px;color:#F5F5F5;font-size:0.85rem;}.dropdown-item:hover{background:#DDB892;color:#0F0F0F;}
- .workspace{display:flex;flex:1}
- .left-panel{width:280px;background:#1A1A1A;border-right:1px solid #2a2a2a;padding:15px;overflow-y:auto}
- .center{flex:1;position:relative;background:#222}.right-panel{width:300px;background:#1A1A1A;border-left:1px solid #2a2a2a;padding:15px;overflow-y:auto}
+  .topbar{background:#1A1A1A;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #2a2a2a;font-size:0.9rem;z-index:100}
+  .menu{position:relative}.menu-title{padding:10px 14px;cursor:pointer;color:#DDB892}.menu:hover .menu-title{background:#DDB892;color:#0F0F0F}
+  .dropdown{position:absolute;top:100%;left:0;background:#2A2A2A;border:1px solid #333;border-radius:6px;min-width:200px;display:none;padding:5px 0}.menu:hover .dropdown{display:block}
+  .dropdown-item{padding:8px 15px;color:#F5F5F5;font-size:0.85rem}.dropdown-item:hover{background:#DDB892;color:#0F0F0F}
+  .workspace{display:flex;flex:1}
+  .left-panel{width:280px;background:#1A1A1A;border-right:1px solid #2a2a2a;padding:15px;overflow-y:auto}
+  .center{flex:1;position:relative;background:#222}.right-panel{width:300px;background:#1A1A1A;border-left:1px solid #2a2a2a;padding:15px;overflow-y:auto}
   #canvas{width:100%;height:100%;display:block}
- .tool-btn{width:40px;height:40px;background:#2a2a2a;border:none;border-radius:8px;margin:5px;color:#DDB892;cursor:pointer;font-size:1.2rem}
- .section{background:#222;padding:10px;border-radius:8px;margin:10px 0}.section h4{color:#DDB892;font-size:0.9rem;margin-bottom:8px}
- .fabric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.fabric-swatch{width:100%;aspect-ratio:1;background:#333;border-radius:4px;border:2px solid transparent}
- .btn{background:#DDB892;color:#0F0F0F;border:none;padding:10px;width:100%;border-radius:8px;font-weight:600;cursor:pointer;margin-top:10px}
+  .tool-btn{width:40px;height:40px;background:#2a2a2a;border:none;border-radius:8px;margin:5px;color:#DDB892;cursor:pointer;font-size:1.2rem}
+  .section{background:#222;padding:10px;border-radius:8px;margin:10px 0}.section h4{color:#DDB892;font-size:0.9rem;margin-bottom:8px}
+  .btn{background:#DDB892;color:#0F0F0F;border:none;padding:10px;width:100%;border-radius:8px;font-weight:600;cursor:pointer;margin-top:10px}
 </style>
 <script type="importmap">{"imports": {"three": "https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 </head>
@@ -35,7 +34,7 @@
     </div>
     <div class="center"><canvas id="canvas"></canvas></div>
     <div class="right-panel" id="rightPanel">
-      <div class="section"><h4>Layers</h4><p>Body</p></div>
+      <div class="section"><h4>Layers</h4><p>Mannequin</p></div>
       <button class="btn">Marketplace</button>
     </div>
   </div>
@@ -44,45 +43,51 @@
   import * as THREE from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x222);
+  const scene = new THREE.Scene(); 
+  scene.background = new THREE.Color(0x222);
   const canvas = document.getElementById('canvas');
   const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({canvas:canvas,antialias:true});
   renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  
   const controls = new OrbitControls(camera, renderer.domElement);
-  camera.position.set(0,1.3,3.5); controls.target.set(0,1,0);
+  camera.position.set(0,1.3,3.5); 
+  controls.target.set(0,1,0);
 
   scene.add(new THREE.AmbientLight(0xDDB892, 0.5));
   scene.add(new THREE.DirectionalLight(0xDDB892, 1));
 
-  // HUMAN MESH - MORE DETAILED THAN LAST ONE
+  // ONLY HUMAN - NO CUBE
   const mat = new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true});
   const human = new THREE.Group();
 
-  human.add(new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), mat)); // head
-  human.children[0].position.y = 1.8;
+  // Head
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), mat);
+  head.position.y = 1.8;
+  human.add(head);
 
-  human.add(new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 1, 16), mat)); // torso
-  human.children[1].position.y = 0.8;
+  // Torso
+  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 1, 16), mat);
+  torso.position.y = 0.8;
+  human.add(torso);
 
-  // arms with hands
+  // Arms - A Pose
   const armGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.8, 8);
-  const lArm = new THREE.Mesh(armGeo, mat); lArm.position.set(-0.45, 0.8, 0); lArm.rotation.z = 0.5; lArm.rotation.y = 0.2;
-  const rArm = new THREE.Mesh(armGeo, mat); rArm.position.set(0.45, 0.8, 0); rArm.rotation.z = -0.5; rArm.rotation.y = -0.2;
+  const lArm = new THREE.Mesh(armGeo, mat); lArm.position.set(-0.45, 0.8, 0); lArm.rotation.z = 0.5;
+  const rArm = new THREE.Mesh(armGeo, mat); rArm.position.set(0.45, 0.8, 0); rArm.rotation.z = -0.5;
   human.add(lArm); human.add(rArm);
 
-  // legs with feet
+  // Legs
   const legGeo = new THREE.CylinderGeometry(0.12, 0.12, 1, 8);
   const lLeg = new THREE.Mesh(legGeo, mat); lLeg.position.set(-0.15, -0.2, 0);
   const rLeg = new THREE.Mesh(legGeo, mat); rLeg.position.set(0.15, -0.2, 0);
   human.add(lLeg); human.add(rLeg);
 
-  human.scale.set(1.1, 1.1, 1.1);
-  scene.add(human);
+  scene.add(human); // ADD HUMAN TO SCENE
 
   function animate(){
     requestAnimationFrame(animate);
-    human.rotation.y += 0.003;
+    human.rotation.y += 0.003; // only human spins
     controls.update();
     renderer.render(scene,camera);
   }
