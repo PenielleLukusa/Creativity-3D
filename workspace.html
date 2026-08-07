@@ -24,7 +24,7 @@
   .tool-icon:hover{background:#DDB892;color:#0B0B0D}
   .tool-icon.active{background:#DDB892;color:#0B0B0D}
   .center{flex:1;background:#0B0B0D;position:relative}
-  #canvas{width:100%;height:100%;display:block;background:#0B0B0D}
+  #canvas{width:100%;height:100%;display:block}
   .right-panel{width:250px;background:#141416;border-left:1px solid #23232A;padding:12px;overflow-y:auto}
   .panel-sec{margin-bottom:15px}
   .panel-sec h4{background:#1C1C20;padding:8px 10px;font-size:11px;color:#DDB892;margin-bottom:6px;border-radius:6px;font-weight:600}
@@ -68,38 +68,34 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0B0B0D); // BLACK
-scene.fog = new THREE.Fog(0x0B0B0D, 5, 15); // FOG GLOW
+scene.background = new THREE.Color(0x0B0B0D);
 
 const canvas = document.getElementById('canvas');
 const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
 renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-renderer.setClearColor(0x0B0B0D, 1);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(3,2,4);
 controls.target.set(0,0,0);
-controls.enableDamping = true;
 
-// STUDIO LIGHTING SETUP
-const ambient = new THREE.AmbientLight(0xDDB892, 0.3); // WARM AMBIENT
-scene.add(ambient);
+// 1. AMBIENT LIGHT - so you can see everything
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(ambientLight);
 
-const keyLight = new THREE.DirectionalLight(0xffffff, 1.2); // MAIN LIGHT FROM FRONT
-keyLight.position.set(2, 3, 5);
+// 2. KEY LIGHT - main light from front top
+const keyLight = new THREE.DirectionalLight(0xffffff, 1);
+keyLight.position.set(0, 3, 5);
 scene.add(keyLight);
 
-const rimLight = new THREE.DirectionalLight(0xDDB892, 0.8); // GOLD RIM LIGHT FROM BACK
-rimLight.position.set(-3, 2, -3);
+// 3. RIM LIGHT - gold light from behind for glow
+const rimLight = new THREE.PointLight(0xDDB892, 1.5, 10);
+rimLight.position.set(0, 0, -3);
 scene.add(rimLight);
 
-const fillLight = new THREE.PointLight(0xDDB892, 0.5, 10); // GLOW AROUND MANNEQUIN
-fillLight.position.set(0, 0, 2);
-scene.add(fillLight);
+// MANNEQUIN - SWITCHED TO STANDARD MATERIAL SO LIGHTS WORK
+const goldMat = new THREE.MeshStandardMaterial({color:0xDDB892, wireframe:true}); // STANDARD NOT BASIC
 
-// MANNEQUIN - GOLD WIREFRAME
-const goldMat = new THREE.MeshBasicMaterial({color:0xDDB892, wireframe:true});
 const cylGeo = new THREE.CylinderGeometry(0.5, 0.5, 2.5, 16, 1, true);
 const cylinder = new THREE.Mesh(cylGeo, goldMat);
 cylinder.position.y = -0.5;
@@ -109,13 +105,6 @@ const headGeo = new THREE.SphereGeometry(0.5, 16, 16);
 const sphere = new THREE.Mesh(headGeo, goldMat);
 sphere.position.y = 1.2;
 scene.add(sphere);
-
-// BACKGROUND GLOW PLANE
-const planeGeo = new THREE.PlaneGeometry(10, 10);
-const planeMat = new THREE.MeshBasicMaterial({color:0x1a1a2a, side:THREE.DoubleSide});
-const bgPlane = new THREE.Mesh(planeGeo, planeMat);
-bgPlane.position.z = -3;
-scene.add(bgPlane);
 
 function animate(){requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera)}
 animate();
