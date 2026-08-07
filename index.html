@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creativity With Penny</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: #0F0F0F;
+      color: #F5F5F5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Fashion thread lines */
+    body::before, body::after {
+      content: '';
+      position: absolute;
+      width: 40%;
+      height: 100%;
+      background-image: repeating-linear-gradient(0deg, #DDB89220 0px, transparent 2px, transparent 8px);
+      opacity: 0.3;
+    }
+    body::before { left: 0; bottom: 0; }
+    body::after { right: 0; top: 0; }
+
+    .card {
+      background: #1A1A1A;
+      padding: 60px 40px;
+      border-radius: 16px;
+      text-align: center;
+      width: 90%;
+      max-width: 450px;
+      z-index: 2;
+      border: 1px solid #2a2a2a;
+    }
+
+    h1 { font-size: 2rem; margin-bottom: 10px; }
+    h2 { font-size: 1.5rem; margin-bottom: 40px; font-weight: 400; color: #DDB892; }
+
+    .btn {
+      background: #DDB892;
+      color: #0F0F0F;
+      border: none;
+      padding: 14px 20px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #E8DCCA; transform: translateY(-2px); }
+
+    .subtext { font-size: 0.85rem; color: #A0A0A0; margin: 15px 0 5px; }
+    .required { font-size: 0.75rem; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome to Creativity</h1>
+    <h2>With Penny</h2>
+
+    <button class="btn" onclick="window.location.href='signup.html'">Sign Up</button>
+    
+    <p class="subtext">Already have an account?</p>
+    <p class="required">Required ▲</p>
+    
+    <button class="btn" onclick="window.location.href='login.html'">Login</button>
+  </div>
+</body>
+</html>

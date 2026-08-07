@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customize - Creativity</title>
+<style>
+  .wrapper{display:flex;gap:20px;max-width:1200px;margin:40px auto;padding:20px}
+  .side-panel{background:#1A1A1A;padding:20px;border-radius:12px;width:250px}
+  .viewer{flex:1;background:#1A1A1A;border-radius:12px;display:flex;align-items:center;justify-content:center;height:500px}
+  .measurements input{width:100%;margin:5px 0;padding:8px;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5}
+  @media(max-width:900px){.wrapper{flex-direction:column}}
+</style>
+</head>
+<body>
+  <div class="avatar"></div>
+  <div class="nav"><button class="active">Home</button><button>Explore</button><button>Gallery</button><button>Marketplace</button></div>
+
+  <h2 style="text-align:center;margin-top:20px">Customize your own model</h2>
+  <div class="wrapper">
+    <div class="side-panel">
+      <button>Skin</button> <button>Size</button>
+      <p>Male</p><p>Female</p><p>Non-binary</p>
+      <button class="btn" style="margin-top:20px" onclick="window.location.href='workspace.html'">Create</button>
+    </div>
+    <div class="viewer"><p>3D Model Preview</p></div>
+    <div class="side-panel measurements">
+      <input placeholder="Bust/Chest Circumference">
+      <input placeholder="Waist Circumference">
+      <input placeholder="Hip Circumference">
+      <input placeholder="Total Height">
+      <button>More options</button>
+    </div>
+  </div>
+</body>
+</html>

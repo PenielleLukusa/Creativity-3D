@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabric Creator - Creativity</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5;height:100vh;display:flex;flex-direction:column}
+ .nav{display:flex;gap:10px;background:#1A1A1A;padding:8px;border-radius:30px;width:fit-content;margin:10px auto}
+ .nav button{background:transparent;border:none;color:#A0A0A0;padding:8px 20px;border-radius:20px;cursor:pointer}
+ .nav.active{background:#DDB892;color:#0F0F0F;font-weight:600}
+ .workspace{display:flex;flex:1;padding:20px;gap:20px}
+ .left-tools{width:60px;background:#1A1A1A;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:10px}
+ .tool{width:40px;height:40px;background:#2a2a2a;border:none;border-radius:8px;color:#DDB892;cursor:pointer;font-size:18px}
+ .tool.active{background:#DDB892;color:#0F0F0F}
+ .canvas-area{flex:1;background:#222;border-radius:12px;padding:20px;display:flex;align-items:center;justify-content:center}
+  #drawCanvas{background:#fff;border-radius:8px;cursor:crosshair;touch-action:none}
+ .right-panel{width:300px;background:#1A1A1A;border-radius:12px;padding:15px}
+ .section{background:#222;padding:12px;border-radius:8px;margin-bottom:10px}
+ .section h4{color:#DDB892;font-size:0.9rem;margin-bottom:8px}
+ .color-picker{width:100%;height:80px;background:linear-gradient(to right,red,yellow,green,cyan,blue,magenta,red);border-radius:8px;margin:10px 0}
+ .btn{background:#DDB892;color:#0F0F0F;border:none;padding:10px;width:100%;border-radius:8px;font-weight:600;cursor:pointer;margin-top:8px}
+ .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;z-index:100}
+ .modal-content{background:#1A1A1A;padding:30px;border-radius:16px;width:90%;max-width:600px}
+ .modal-content input{width:100%;padding:10px;margin:8px 0;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5}
+</style>
+</head>
+<body>
+  <div class="nav">
+    <button>Home</button><button>Explore</button><button>Gallery</button><button>Marketplace</button>
+  </div>
+
+  <div class="workspace">
+    <div class="left-tools">
+      <button class="tool active" onclick="setTool('brush')">✏️</button>
+      <button class="tool" onclick="setTool('eraser')">🧽</button>
+      <button class="tool" onclick="setTool('line')">📏</button>
+      <button class="tool" onclick="setTool('circle')">⭕</button>
+      <button class="tool" onclick="clearCanvas()">🗑️</button>
+    </div>
+
+    <div class="canvas-area">
+      <canvas id="drawCanvas" width="800" height="500"></canvas>
+    </div>
+
+    <div class="right-panel">
+      <div class="section">
+        <h4>Layers</h4>
+        <p>Tracing 2</p><p>Tracing 1</p><p>Background</p>
+        <button class="btn" style="background:#333;color:#F5F5F5">Add Layer</button>
+      </div>
+      <div class="section">
+        <h4>Colors</h4>
+        <div class="color-picker" id="colorPicker"></div>
+        <input type="color" id="colorInput" value="#000" style="width:100%">
+      </div>
+      <button class="btn" onclick="showPublishModal()">Publish to Marketplace</button>
+    </div>
+  </div>
+
+  <!-- Publish Modal -->
+  <div class="modal" id="publishModal">
+    <div class="modal-content">
+      <h3>Publish Your Fabric</h3>
+      <canvas id="previewCanvas" width="400" height="250" style="background:#fff;border-radius:8px;margin:10px 0"></canvas>
+      <input type="text" placeholder="Fabric Name">
+      <input type="text" placeholder="Add Description">
+      <input type="number" placeholder="Price CA$00.00">
+      <input type="text" placeholder="Type of Fabric: Cotton, Silk...">
+      <button class="btn">Add to Marketplace</button>
+      <button class="btn" style="background:#333;color:#F5F5F5" onclick="document.getElementById('publishModal').style.display='none'">Cancel</button>
+    </div>
+  </div>
+
+<script>
+  const canvas = document.getElementById('drawCanvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let currentTool = 'brush';
+  let currentColor = '#000000';
+  let lineWidth = 3;
+
+  // Drawing logic
+  function startDraw(e){
+    drawing = true;
+    draw(e);
+  }
+  function endDraw(){drawing = false; ctx.beginPath();}
+  function draw(e){
+    if(!drawing) return;
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = currentTool === 'eraser'? '#FFFFFF' : currentColor;
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.touches? e.touches[0].clientX : e.clientX) - rect.left;
+    const y = (e.touches? e.touches[0].clientY : e.clientY) - rect.top;
+    
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  }
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', endDraw);
+  canvas.addEventListener('touchstart', startDraw);
+  canvas.addEventListener('touchmove', draw);
+  canvas.addEventListener('touchend', endDraw);
+
+  function setTool(tool){
+    currentTool = tool;
+    document.querySelectorAll('.tool').forEach(t=>t.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+  function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);}
+  
+  document.getElementById('colorInput').addEventListener('input', e=> currentColor = e.target.value);
+
+  function showPublishModal(){
+    document.getElementById('publishModal').style.display='flex';
+    // Copy drawing to preview
+    const preview = document.getElementById('previewCanvas').getContext('2d');
+    preview.drawImage(canvas, 0, 0, 400, 250);
+  }
+</script>
+</body>
+</html>

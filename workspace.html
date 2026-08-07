@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workspace - Creativity</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  .topbar{background:#1A1A1A;padding:10px 20px;display:flex;gap:20px;border-bottom:1px solid #2a2a2a}
+  .topbar span{cursor:pointer;padding:5px 10px;border-radius:4px}
+  .topbar span:hover{background:#2a2a2a}
+  .workspace{display:flex;flex:1}
+  .left-panel{width:280px;background:#1A1A1A;border-right:1px solid #2a2a2a;padding:15px;overflow-y:auto}
+  .center{flex:1;position:relative;background:#222}
+  .right-panel{width:300px;background:#1A1A1A;border-left:1px solid #2a2a2a;padding:15px;overflow-y:auto}
+  #canvas{width:100%;height:100%}
+  .tool-btn{width:40px;height:40px;background:#2a2a2a;border:none;border-radius:8px;margin:5px;color:#DDB892;cursor:pointer}
+  .section{background:#222;padding:10px;border-radius:8px;margin:10px 0}
+  .section h4{color:#DDB892;font-size:0.9rem;margin-bottom:8px}
+  .fabric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+  .fabric-swatch{width:100%;aspect-ratio:1;background:#333;border-radius:4px;cursor:pointer;border:2px solid transparent}
+  .fabric-swatch:hover{border-color:#DDB892}
+  .btn{background:#DDB892;color:#0F0F0F;border:none;padding:10px;width:100%;border-radius:8px;font-weight:600;cursor:pointer;margin-top:10px}
+  .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center}
+  .modal-content{background:#1A1A1A;padding:30px;border-radius:16px;text-align:center}
+  .modal-views{display:flex;gap:10px;margin:20px 0}
+  .modal-views div{width:120px;height:200px;background:#222;border-radius:8px}
+  @media(max-width:900px){.left-panel,.right-panel{position:absolute;z-index:10;height:100%;display:none}}
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+  <div class="topbar">
+    <span>File</span><span>Edit</span><span>Layout</span><span>Image</span><span>Filter</span>
+    <span>View</span><span>Select</span><span>Window</span>
+    <span style="margin-left:auto" onclick="showSaveModal()">Save</span>
+  </div>
+
+  <div class="workspace">
+    <div class="left-panel">
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="tool-btn">✋</button><button class="tool-btn">↻</button><button class="tool-btn">📐</button>
+        <button class="tool-btn">✂️</button><button class="tool-btn">🎨</button><button class="tool-btn">📏</button>
+      </div>
+      <div class="section">
+        <h4>AI Tools</h4>
+        <input placeholder="Type here..." style="width:100%;padding:8px;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5">
+      </div>
+    </div>
+
+    <div class="center">
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="right-panel">
+      <div class="section">
+        <h4>Layers</h4>
+        <p>Unit 1</p><p>Unit 2</p><p>Background</p>
+      </div>
+      <div class="section">
+        <h4>Fabric Panel</h4>
+        <div class="fabric-grid">
+          <div class="fabric-swatch" style="background:repeating-linear-gradient(45deg,#444 0 5px,#555 5px 10px)"></div>
+          <div class="fabric-swatch" style="background:#8B5A2B"></div>
+          <div class="fabric-swatch" style="background:#DDB892"></div>
+          <div class="fabric-swatch" style="background:#EC4899"></div>
+        </div>
+      </div>
+      <div class="section">
+        <h4>Texture Panel</h4>
+        <div class="fabric-grid">
+          <div class="fabric-swatch"></div><div class="fabric-swatch"></div><div class="fabric-swatch"></div><div class="fabric-swatch"></div>
+        </div>
+      </div>
+      <button class="btn">Marketplace</button>
+    </div>
+  </div>
+
+  <!-- Save Modal -->
+  <div class="modal" id="saveModal">
+    <div class="modal-content">
+      <h3>Save your Design</h3>
+      <div class="modal-views">
+        <div>Front</div><div>Back</div><div>Side</div>
+      </div>
+      <button class="btn" onclick="savePNG()">Save in your Computer</button>
+      <button class="btn" style="background:#333;color:#F5F5F5">Save in your Gallery</button>
+    </div>
+  </div>
+
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x222222);
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),antialias:true,preserveDrawingBuffer:true});
+  renderer.setSize(window.innerWidth - 580, window.innerHeight - 50);
+  
+  const controls = new OrbitControls(camera, renderer.domElement);
+  camera.position.set(0,1.5,4);
+
+  // Temp Mannequin - Cylinder
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.4, 0.5, 2, 32),
+    new THREE.MeshStandardMaterial({color:0xffffff, wireframe:false})
+  );
+  body.position.y = 0;
+  scene.add(body);
+
+  const light = new THREE.DirectionalLight(0xffffff, 1.5);
+  light.position.set(2,3,2);
+  scene.add(light);
+  scene.add(new THREE.AmbientLight(0x404040));
+
+  function animate(){
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  window.showSaveModal = () => document.getElementById('saveModal').style.display='flex';
+  window.savePNG = () => {
+    const url = renderer.domElement.toDataURL();
+    const a = document.createElement('a');
+    a.href = url; a.download = 'design.png'; a.click();
+    document.getElementById('saveModal').style.display='none';
+  }
+</script>
+</body>
+</html>

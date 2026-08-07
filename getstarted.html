@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Started - Creativity</title>
+<style>/* same base CSS as home */ 
+.grid{display:flex;gap:20px;justify-content:center;margin:40px 0;flex-wrap:wrap}
+.card{background:#1A1A1A;padding:20px;border-radius:12px;width:200px;cursor:pointer;border:2px solid transparent}
+.card:hover{border-color:#DDB892}
+.card img{width:100%;background:#2a2a2a;height:300px;border-radius:8px}
+</style>
+</head>
+<body>
+  <div class="avatar"></div>
+  <div class="nav"><button class="active">Home</button><button>Explore</button><button>Gallery</button><button>Marketplace</button></div>
+  
+  <div style="max-width:1000px;margin:40px auto;padding:20px">
+    <h2>Get started</h2>
+    <div style="background:#1A1A1A;padding:30px;border-radius:16px;margin-top:20px">
+      <h3 style="text-align:center;margin-bottom:20px">Choose your model</h3>
+      <div class="grid">
+        <div class="card" onclick="localStorage.setItem('model','male');window.location.href='workspace.html'"><div style="background:#2a2a2a;height:300px"></div><p>Select</p></div>
+        <div class="card" onclick="localStorage.setItem('model','female');window.location.href='workspace.html'"><div style="background:#2a2a2a;height:300px"></div><p>Select</p></div>
+        <div class="card" onclick="localStorage.setItem('model','kids');window.location.href='workspace.html'"><div style="background:#2a2a2a;height:300px"></div><p>Select</p></div>
+      </div>
+      <p style="text-align:center;margin-top:20px">Customize Your own model</p>
+      <button class="btn" style="display:block;margin:10px auto" onclick="window.location.href='customize.html'">Create your Own</button>
+    </div>
+  </div>
+</body>
+</html>

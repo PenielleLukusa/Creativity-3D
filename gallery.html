@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery - Creativity</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5;padding:20px}
+  .nav{display:flex;gap:10px;background:#1A1A1A;padding:8px;border-radius:30px;width:fit-content;margin:0 auto 30px}
+  .nav button{background:transparent;border:none;color:#A0A0A0;padding:8px 20px;border-radius:20px;cursor:pointer}
+  .nav .active{background:#DDB892;color:#0F0F0F;font-weight:600}
+  .profile-icon{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:#2a2a2a}
+  
+  .container{display:flex;gap:30px;max-width:1200px;margin:0 auto}
+  .sidebar{width:280px}
+  .profile-card{background:#1A1A1A;border-radius:16px;padding:20px;text-align:center}
+  .avatar{width:70px;height:70px;border-radius:50%;background:#2a2a2a;margin:0 auto 10px}
+  .name{font-weight:600;font-size:1.1rem}
+  .bio{color:#A0A0A0;font-size:0.85rem;margin:5px 0 15px}
+  .category-btn{background:#2a2a2a;border:none;color:#DDB892;padding:6px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer;width:100%}
+
+  .main{flex:1}
+  .tabs{display:flex;gap:10px;margin-bottom:20px}
+  .tab-btn{padding:10px 20px;background:#1A1A1A;border:none;color:#A0A0A0;border-radius:8px;cursor:pointer}
+  .tab-btn.active{background:#DDB892;color:#0F0F0F;font-weight:600}
+  
+  h2{margin-bottom:20px;font-size:1.5rem}
+  
+  /* View 1: All Creations Grid */
+  .grid{background:#1A1A1A;padding:20px;border-radius:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+  .grid-item{background:#222;border-radius:10px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s}
+  .grid-item:hover{border:2px solid #DDB892}
+
+  /* View 2: Collections */
+  .collections-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+  .collection-card{background:#1A1A1A;border-radius:16px;overflow:hidden;cursor:pointer;transition:0.3s}
+  .collection-card:hover{transform:translateY(-5px)}
+  .collection-header{background:#2a2a2a;padding:10px;display:flex;justify-content:space-between}
+  .collection-body{height:180px;background:#222;display:flex;align-items:center;justify-content:center}
+  .collection-label{background:#DDB892;color:#0F0F0F;padding:8px 20px;border-radius:20px;font-weight:600}
+  .add-collection{background:#1A1A1A;border:2px dashed #333;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#555;font-size:2rem;cursor:pointer}
+  
+  .hidden{display:none}
+</style>
+</head>
+<body>
+  <div class="profile-icon"></div>
+  <div class="nav">
+    <button>Home</button><button>Explore</button><button class="active">Gallery</button><button>Marketplace</button>
+  </div>
+
+  <div class="container">
+    <div class="sidebar">
+      <div class="profile-card">
+        <div class="avatar">👤</div>
+        <div class="name">Anna Martina</div>
+        <div class="bio">Fashion student</div>
+        <button class="category-btn" onclick="showCollections()">Categorize your gallery</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('all')">Your Creations</button>
+        <button class="tab-btn" onclick="showTab('collections')">Collections</button>
+      </div>
+
+      <!-- TAB 1: ALL CREATIONS -->
+      <div id="all-tab">
+        <h2>Your Creations</h2>
+        <div class="grid" id="allGrid"></div>
+      </div>
+
+      <!-- TAB 2: COLLECTIONS -->
+      <div id="collections-tab" class="hidden">
+        <h2>Your Collections</h2>
+        <div class="collections-grid">
+          <div class="collection-card" onclick="openCollection('WORK')">
+            <div class="collection-header">📤</div>
+            <div class="collection-body"><div class="collection-label">WORK</div></div>
+          </div>
+          <div class="collection-card" onclick="openCollection('School')">
+            <div class="collection-header">📤</div>
+            <div class="collection-body"><div class="collection-label">School</div></div>
+          </div>
+          <div class="collection-card" onclick="openCollection('Inspirations')">
+            <div class="collection-header">📤</div>
+            <div class="collection-body"><div class="collection-label">Inspirations</div></div>
+          </div>
+          <div class="collection-card" onclick="openCollection('Portfolio')">
+            <div class="collection-header">📤</div>
+            <div class="collection-body"><div class="collection-label">Portfolio</div></div>
+          </div>
+          <div class="collection-card" onclick="openCollection('Clients')">
+            <div class="collection-header">📤</div>
+            <div class="collection-body"><div class="collection-label">Clients</div></div>
+          </div>
+          <div class="collection-card" onclick="openCollection('Try out')">
+            <div class="collection-header">📤</div>
+            <div class="collection-body"><div class="collection-label">Try out</div></div>
+          </div>
+          <div class="add-collection" onclick="alert('Create new collection')">+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Load 35 dummy items for "All Creations"
+  const grid = document.getElementById('allGrid');
+  for(let i=0; i<35; i++){
+    const item = document.createElement('div');
+    item.className = 'grid-item';
+    item.innerHTML = '⛰️';
+    item.onclick = () => openModal(i); // reuse modal from before
+    grid.appendChild(item);
+  }
+  
+  function showTab(tab){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    document.getElementById('all-tab').classList.add('hidden');
+    document.getElementById('collections-tab').classList.add('hidden');
+    
+    document.getElementById(tab+'-tab').classList.remove('hidden');
+  }
+  
+  function showCollections(){showTab('collections');}
+  function openCollection(name){alert('Open collection: ' + name + '. Shows only designs in this folder');}
+  function openModal(id){alert('Open design detail modal for item ' + id)} // connect to modal from before
+</script>
+</body>
+</html>

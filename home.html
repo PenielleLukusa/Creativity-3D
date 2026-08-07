@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home - Creativity</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5;min-height:100vh;padding:20px;background-image:repeating-linear-gradient(90deg,#DDB89210 0 1px,transparent 1px 20px)}
+  .nav{display:flex;gap:10px;background:#1A1A1A;padding:8px;border-radius:30px;width:fit-content;margin:0 auto}
+  .nav button{background:transparent;border:none;color:#A0A0A0;padding:8px 20px;border-radius:20px;cursor:pointer}
+  .nav .active{background:#DDB892;color:#0F0F0F;font-weight:600}
+  .avatar{position:absolute;top:20px;right:20px;width:35px;height:35px;border-radius:50%;background:#2a2a2a}
+  .content{max-width:800px;margin:80px auto;text-align:center}
+  h1{font-size:1.8rem;margin-bottom:10px}
+  .btn{background:#DDB892;color:#0F0F0F;border:none;padding:12px 30px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:20px}
+  .bubble{background:#1A1A;border-radius:30px 30px 0 30px;padding:30px;margin-top:60px;max-width:400px;margin-left:auto}
+  .bubble .btn{background:#F5F5F5}
+</style>
+</head>
+<body>
+  <div class="avatar"></div>
+  <div class="nav">
+    <button class="active">Home</button><button>Explore</button><button>Gallery</button><button>Marketplace</button>
+  </div>
+
+  <div class="content">
+    <h1>Build your Wardrobe</h1>
+    <p>With a 3D mannequin<br>And export it for your future projects</p>
+    <button class="btn" onclick="window.location.href='get-started.html'">Get started</button>
+
+    <div class="bubble">
+      <p><b>Would you like to create<br>your own fabric design<br>and texture?</b><br>We got you</p>
+      <button class="btn" onclick="window.location.href='customize.html'">Create</button>
+    </div>
+  </div>
+</body>
+</html>

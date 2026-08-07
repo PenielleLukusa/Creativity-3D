@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Creativity</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5;display:flex;min-height:100vh}
+  .side{width:35%;background:#1A1A1A;padding:40px;display:flex;align-items:center;justify-content:center;text-align:center;border-right:1px solid #2a2a2a}
+  .side p{font-size:1.1rem;color:#DDB892}
+  .main{flex:1;padding:60px 40px;display:flex;flex-direction:column;align-items:center}
+  .avatar{width:90px;height:90px;border-radius:50%;background:#2a2a2a;margin-bottom:20px;position:relative}
+  .avatar::after{content:'';position:absolute;top:15px;left:25px;width:40px;height:40px;border-radius:50%;background:#444}
+  h2{margin-bottom:30px;color:#DDB892;font-weight:400}
+  input{width:300px;max-width:90%;padding:12px;margin:8px 0;background:#1A1A1A;border:1px solid #333;border-radius:8px;color:#F5F5F5}
+  .btn{background:#DDB892;color:#0F0F0F;border:none;padding:12px 30px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:10px}
+  .btn:hover{background:#E8DCCA}
+  .social{display:flex;gap:10px;margin-top:30px}
+  .social-btn{background:#1A1A1A;border:1px solid #333;padding:8px 16px;border-radius:20px;font-size:0.8rem;cursor:pointer;color:#F5F5F5}
+  .tabs{position:absolute;top:20px;right:40px;display:flex;gap:10px}
+  .tab{padding:8px 20px;border-radius:6px;background:#2a2a2a;cursor:pointer}
+  .tab.active{background:#DDB892;color:#0F0F0F}
+  @media(max-width:768px){.side{display:none}}
+</style>
+</head>
+<body>
+  <div class="tabs">
+    <div class="tab" onclick="window.location.href='signup.html'">Sign up</div>
+    <div class="tab active">Login</div>
+  </div>
+
+  <div class="side">
+    <p>Let's connect to create amazing<br><b>Design</b></p>
+  </div>
+
+  <div class="main">
+    <div class="avatar"></div>
+    <h2>Fill out your information below</h2>
+    <input type="email" placeholder="Email Address">
+    <input type="password" placeholder="Password">
+    <button class="btn" onclick="window.location.href='workspace.html'">Login</button>
+
+    <div class="social">
+      <button class="social-btn">Google</button>
+      <button class="social-btn">Facebook</button>
+      <button class="social-btn">Apple</button>
+      <button class="social-btn">Instagram</button>
+    </div>
+  </div>
+</body>
+</html>

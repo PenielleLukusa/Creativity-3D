@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace - Creativity</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5;padding:20px}
+  .nav{display:flex;gap:10px;background:#1A1A1A;padding:8px;border-radius:30px;width:fit-content;margin:0 auto 30px}
+  .nav button{background:transparent;border:none;color:#A0A0A0;padding:8px 20px;border-radius:20px;cursor:pointer}
+  .nav .active{background:#DDB892;color:#0F0F0F;font-weight:600}
+  .profile-icon{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:#2a2a2a}
+  .search{float:right;margin-bottom:20px;padding:8px 15px;background:#1A1A1A;border:1px solid #333;border-radius:20px;color:#F5F5F5}
+  
+  h2{margin:20px 0 10px}
+  .category-row{display:flex;gap:15px;overflow-x:auto;padding:10px 0;margin-bottom:30px}
+  .cat-card{background:#1A1A1A;border-radius:12px;min-width:150px;height:100px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+  .cat-card .plus{position:absolute;right:10px;bottom:10px;background:#DDB892;color:#0F0F0F;width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold}
+
+  /* Shop Grid */
+  .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px}
+  .product{background:#1A1A1A;border-radius:12px;padding:10px;cursor:pointer;transition:0.3s}
+  .product:hover{transform:translateY(-3px)}
+  .product-img{width:100%;aspect-ratio:1;background:#222;border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .product-info{margin-top:8px;font-size:0.85rem}
+  .stars{color:#DDB892;font-size:0.7rem}
+
+  /* Product Detail */
+  .detail-layout{display:flex;gap:20px}
+  .detail-left{flex:2}
+  .detail-right{flex:1;background:#1A1A1A;padding:20px;border-radius:12px;height:fit-content}
+  .detail-images{display:flex;gap:10px}
+  .detail-main{width:200px;height:200px;background:#222;border-radius:12px}
+  .detail-info h3{margin-bottom:10px}
+  .order-summary p{display:flex;justify-content:space-between;margin:8px 0;font-size:0.9rem}
+  .btn{background:#DDB892;color:#0F0F0F;border:none;padding:12px;width:100%;border-radius:8px;font-weight:600;cursor:pointer;margin-top:10px}
+  .suggestions{display:flex;gap:10px;margin-top:20px;overflow-x:auto}
+  .suggestion-card{min-width:100px;height:100px;background:#222;border-radius:8px}
+  
+  .hidden{display:none}
+</style>
+</head>
+<body>
+  <div class="profile-icon"></div>
+  <div class="nav">
+    <button>Home</button><button>Explore</button><button>Gallery</button><button class="active">Marketplace</button>
+  </div>
+  <input class="search" placeholder="Search 🔍">
+
+  <!-- VIEW 1: MARKETPLACE HOME -->
+  <div id="home-view">
+    <h2>Fabrics</h2>
+    <div class="category-row">
+      <div class="cat-card" onclick="showShop('fabrics')">Cotton</div>
+      <div class="cat-card" onclick="showShop('fabrics')">Silk</div>
+      <div class="cat-card" onclick="showShop('fabrics')">Denim</div>
+      <div class="cat-card" onclick="showShop('fabrics')">Linen</div>
+      <div class="cat-card" onclick="showShop('fabrics')">Wool</div>
+      <div class="cat-card"><div class="plus">+</div></div>
+    </div>
+
+    <h2>3D Models</h2>
+    <div class="category-row">
+      <div class="cat-card" onclick="showShop('models')">Male</div>
+      <div class="cat-card" onclick="showShop('models')">Female</div>
+      <div class="cat-card" onclick="showShop('models')">Kids</div>
+      <div class="cat-card" onclick="showShop('models')">Dresses</div>
+      <div class="cat-card" onclick="showShop('models')">Tops</div>
+      <div class="cat-card"><div class="plus">+</div></div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: ALL ITEMS GRID -->
+  <div id="shop-view" class="hidden">
+    <button onclick="showHome()" style="background:none;border:none;color:#DDB892;margin-bottom:10px;cursor:pointer">← Back</button>
+    <h2 id="shop-title">All Fabrics</h2>
+    <div class="shop-grid" id="shopGrid"></div>
+  </div>
+
+  <!-- VIEW 3: PRODUCT DETAIL -->
+  <div id="detail-view" class="hidden">
+    <button onclick="showShop('fabrics')" style="background:none;border:none;color:#DDB892;margin-bottom:10px;cursor:pointer">← Back</button>
+    <div class="detail-layout">
+      <div class="detail-left">
+        <div class="detail-images">
+          <div class="detail-main">⛰️</div>
+          <div class="detail-info">
+            <h3>Floral Cotton Fabric</h3>
+            <p>By Anna Martina</p>
+            <div class="stars">★★★ 4.8 (24 reviews)</div>
+            <p style="margin:15px 0">Description: High quality 100% cotton. Perfect for summer dresses. Seamless tile pattern.</p>
+          </div>
+        </div>
+        <h4 style="margin:20px 0 10px">Other Suggestions</h4>
+        <div class="suggestions">
+          <div class="suggestion-card"></div><div class="suggestion-card"></div><div class="suggestion-card"></div><div class="suggestion-card"></div><div class="suggestion-card"></div>
+        </div>
+      </div>
+      <div class="detail-right">
+        <h4>Order Summary</h4>
+        <div class="order-summary">
+          <p><span>Price</span><span>$12.99</span></p>
+          <p><span>License</span><span>Commercial</span></p>
+          <p><span>File Type</span><span>.png + .glb</span></p>
+          <hr style="border-color:#333;margin:10px 0">
+          <p><b><span>Total</span><span>$12.99</span></b></p>
+        </div>
+        <select style="width:100%;padding:8px;background:#222;border:1px solid #333;color:#F5F5F5;border-radius:6px;margin:10px 0">
+          <option>1 Meter</option><option>3 Meters</option><option>5 Meters</option>
+        </select>
+        <button class="btn">Add to Cart</button>
+        <button class="btn" style="background:#333;color:#F5F5F5">Download Preview</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  function showHome(){
+    document.getElementById('home-view').classList.remove('hidden');
+    document.getElementById('shop-view').classList.add('hidden');
+    document.getElementById('detail-view').classList.add('hidden');
+  }
+  function showShop(type){
+    document.getElementById('home-view').classList.add('hidden');
+    document.getElementById('shop-view').classList.remove('hidden');
+    document.getElementById('detail-view').classList.add('hidden');
+    document.getElementById('shop-title').innerText = type === 'fabrics'? 'All Fabrics' : 'All 3D Models';
+    
+    const grid = document.getElementById('shopGrid');
+    grid.innerHTML = '';
+    for(let i=0; i<18; i++){
+      const item = document.createElement('div');
+      item.className = 'product';
+      item.innerHTML = `
+        <div class="product-img">⛰️</div>
+        <div class="product-info">
+          <b>Fabric ${i+1}</b>
+          <div class="stars">★★☆</div>
+          <b>$${(Math.random()*20+5).toFixed(2)}</b>
+        </div>
+      `;
+      item.onclick = () => {
+        document.getElementById('shop-view').classList.add('hidden');
+        document.getElementById('detail-view').classList.remove('hidden');
+      }
+      grid.appendChild(item);
+    }
+  }
+</script>
+</body>
+</html>
