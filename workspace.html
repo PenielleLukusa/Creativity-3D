@@ -18,12 +18,40 @@
     z-index:100;
   }
   .menu{position:relative;}
-  .menu-title{padding:10px 14px;cursor:pointer;color:#DDB892;transition:0.2s;}
-  .menu:hover .menu-title{background:#DDB892;color:#0F0F0F;}
-  .dropdown{position:absolute;top:100%;left:0;background:#2A2A2A;border:1px solid #333;border-radius:6px;min-width:200px;display:none;padding:5px 0;box-shadow:0 4px 15px rgba(0,0,0,0.5);}
+  .menu-title{
+    padding:10px 14px;
+    cursor:pointer;
+    color:#DDB892;
+    transition:0.2s;
+  }
+  .menu:hover .menu-title{
+    background:#DDB892;
+    color:#0F0F0F;
+  }
+  .dropdown{
+    position:absolute;
+    top:100%;
+    left:0;
+    background:#2A2A2A;
+    border:1px solid #333;
+    border-radius:6px;
+    min-width:200px;
+    display:none;
+    padding:5px 0;
+    box-shadow:0 4px 15px rgba(0,0,0,0.5);
+  }
   .menu:hover .dropdown{display:block}
-  .dropdown-item{padding:8px 15px;cursor:default;color:#F5F5F5;font-size:0.85rem;}
-  .dropdown-item:hover{background:#DDB892;color:#0F0F0F;}
+  .dropdown-item{
+    padding:8px 15px;
+    cursor:default;
+    color:#F5F5F5;
+    font-size:0.85rem;
+  }
+  .dropdown-item:hover{
+    background:#DDB892;
+    color:#0F0F0F;
+  }
+  .dropdown-divider{height:1px;background:#333;margin:5px 0}
 
   .workspace{display:flex;flex:1}
   .left-panel{width:280px;background:#1A1A1A;border-right:1px solid #2a2a2a;padding:15px;overflow-y:auto}
@@ -46,11 +74,15 @@
 </script>
 </head>
 <body>
+  <!-- TOP MENU BAR -->
   <div class="topbar">
     <div class="menu"><div class="menu-title">File</div><div class="dropdown"><div class="dropdown-item">New Design</div><div class="dropdown-item">Open</div><div class="dropdown-item">Save</div></div></div>
     <div class="menu"><div class="menu-title">Edit</div><div class="dropdown"><div class="dropdown-item">Undo</div><div class="dropdown-item">Redo</div></div></div>
-    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Grid</div></div></div>
-    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Toggle Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Toggle Right Panel</div></div></div>
+    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Grid</div><div class="dropdown-item">Auto Fit Fabric</div></div></div>
+    <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric Image</div><div class="dropdown-item">Apply Texture</div></div></div>
+    <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Fabric Filters</div><div class="dropdown-item">Color Filters</div></div></div>
+    <div class="menu"><div class="menu-title">View</div><div class="dropdown"><div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div><div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div></div></div>
+    <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select Model</div><div class="dropdown-item">Select Part</div></div></div>
     <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div></div></div>
   </div>
 
@@ -60,14 +92,36 @@
         <button class="tool-btn">✋</button><button class="tool-btn">↻</button><button class="tool-btn">📐</button>
         <button class="tool-btn">✂️</button><button class="tool-btn">🎨</button><button class="tool-btn">📏</button>
       </div>
-      <div class="section"><h4>AI Tools</h4><input placeholder="Type here..." style="width:100%;padding:8px;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5"></div>
+      <div class="section">
+        <h4>AI Tools</h4>
+        <input placeholder="Type here..." style="width:100%;padding:8px;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5">
+      </div>
     </div>
 
-    <div class="center"><canvas id="canvas"></canvas></div>
+    <div class="center">
+      <canvas id="canvas"></canvas>
+    </div>
 
     <div class="right-panel" id="rightPanel">
-      <div class="section"><h4>Layers</h4><p>Dart 3</p><p>Dart 2</p><p>Dart 1</p><p>Background</p></div>
-      <div class="section"><h4>Fabric Panel</h4><div class="fabric-grid"><div class="fabric-swatch" style="background:repeating-linear-gradient(45deg,#444 0 5px,#555 5px 10px)"></div><div class="fabric-swatch" style="background:#DDB892"></div><div class="fabric-swatch" style="background:#8B5A2B"></div><div class="fabric-swatch" style="background:#EC4899"></div></div></div>
+      <div class="section">
+        <h4>Layers</h4>
+        <p>Dart 3</p><p>Dart 2</p><p>Dart 1</p><p>Background</p>
+      </div>
+      <div class="section">
+        <h4>Fabric Panel</h4>
+        <div class="fabric-grid">
+          <div class="fabric-swatch" style="background:repeating-linear-gradient(45deg,#444 0 5px,#555 5px 10px)"></div>
+          <div class="fabric-swatch" style="background:#DDB892"></div>
+          <div class="fabric-swatch" style="background:#8B5A2B"></div>
+          <div class="fabric-swatch" style="background:#EC4899"></div>
+        </div>
+      </div>
+      <div class="section">
+        <h4>Texture Panel</h4>
+        <div class="fabric-grid">
+          <div class="fabric-swatch"></div><div class="fabric-swatch"></div><div class="fabric-swatch"></div><div class="fabric-swatch"></div>
+        </div>
+      </div>
       <button class="btn">Marketplace</button>
     </div>
   </div>
@@ -75,7 +129,6 @@
 <script type="module">
   import * as THREE from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x222);
@@ -85,43 +138,24 @@
   renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   
   const controls = new OrbitControls(camera, renderer.domElement);
-  camera.position.set(0,1.3,3.5);
-  controls.target.set(0,1,0);
+  camera.position.set(0,1.5,4);
 
-  scene.add(new THREE.AmbientLight(0xDDB892, 0.5));
+  // GOLD LIGHTING
+  scene.add(new THREE.AmbientLight(0xDDB892, 0.4));
   const light = new THREE.DirectionalLight(0xDDB892, 1.2);
   light.position.set(2,3,2);
   scene.add(light);
 
-  // LOAD REAL FEMALE MANNEQUIN
-  const loader = new GLTFLoader();
-  let mannequin;
-  
-  // This is a free female base mesh hosted so it works
-  const modelURL = 'https://threejs.org/examples/models/gltf/Female/Female02.glb';
-
-  loader.load(modelURL, (gltf) => { 
-    console.log("Female model loaded");
-    mannequin = gltf.scene;
-    
-    // MAKE IT WIREFRAME LIKE YOUR REFERENCE IMAGE
-    mannequin.traverse((child) => {
-      if (child.isMesh) {
-        child.material.wireframe = true;
-        child.material.color.set(0xffffff);
-      }
-    });
-
-    mannequin.scale.set(1.2, 1.2, 1.2);
-    mannequin.position.y = -0.2;
-    scene.add(mannequin);
-  }, undefined, (error) => {
-    console.error('Error loading model', error);
-  });
+  // WIREFRAME MESH CUBE / MANNEQUIN CYLINDER
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.4, 0.5, 2, 16), // body shape
+    new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true}) // white wireframe
+  );
+  scene.add(body);
 
   function animate(){
     requestAnimationFrame(animate);
-    if(mannequin) mannequin.rotation.y += 0.003; // slow 360 spin
+    body.rotation.y += 0.003; // auto rotate
     controls.update();
     renderer.render(scene,camera);
   }
