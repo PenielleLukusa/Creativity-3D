@@ -156,30 +156,22 @@
   loader.load(modelURL, (gltf) => { 
     mannequin = gltf.scene;
     
-    // MAKE IT WIREFRAME
+    // MAKE IT WIREFRAME LIKE YOUR SCREENSHOT
     mannequin.traverse((child) => {
       if (child.isMesh) {
         child.material.wireframe = true;
-        child.material.color.set(0xffffff);
+        child.material.color.set(0xffffff); // white wireframe
       }
     });
 
     mannequin.scale.set(1.8, 1.8, 1.8);
     mannequin.position.y = -0.5;
     scene.add(mannequin);
-  }, undefined, (err) => {
-    console.error(err);
-    // fallback if gltf fails
-    const body = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.4, 0.5, 2, 16),
-      new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true})
-    );
-    scene.add(body);
   });
 
   function animate(){
     requestAnimationFrame(animate);
-    if(mannequin) mannequin.rotation.y += 0.003;
+    if(mannequin) mannequin.rotation.y += 0.003; // auto rotate
     controls.update();
     renderer.render(scene,camera);
   }
