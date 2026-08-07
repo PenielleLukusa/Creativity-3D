@@ -2,34 +2,36 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3D Workspace</title>
+<title>Atelier Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-  body{background:#1a1a1a;color:#cccccc;height:100vh;display:flex;flex-direction:column}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+  body{background:#0B0B0D;color:#F1F1F3;height:100vh;display:flex;flex-direction:column}
   
-  /* TOPBAR - FIXED Z-INDEX */
-  .topbar{background:#3a3a3a;padding:0 8px;display:flex;gap:0;border-bottom:1px solid #222;font-size:12px;z-index:9999;position:relative}
+  /* TOPBAR - BLACK */
+  .topbar{background:#141416;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #23232A;font-size:13px;z-index:9999;position:relative}
   .menu{position:relative;flex-shrink:0}
-  .menu-title{padding:6px 12px;cursor:pointer;color:#eeeeee;white-space:nowrap}
-  .menu:hover .menu-title{background:#555;color:#ffffff}
-  .dropdown{position:absolute;top:100%;left:0;background:#2a2a2a;border:1px solid #444444;min-width:220px;display:none;padding:4px 0;box-shadow:0 4px 10px rgba(0,0,0,0.6);z-index:10000} /* HIGH Z-INDEX */
+  .menu-title{padding:10px 14px;cursor:pointer;color:#A1A1AA;white-space:nowrap;transition:0.2s}
+  .menu:hover .menu-title{background:#23232A;color:#DDB892} /* GOLD HOVER */
+  .dropdown{position:absolute;top:100%;left:0;background:#1C1C20;border:1px solid #23232A;border-radius:8px;min-width:220px;display:none;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:10000}
   .menu:hover .dropdown{display:block}
-  .dropdown-item{padding:5px 15px;cursor:pointer;color:#dddddd;font-size:12px}
-  .dropdown-item:hover{background:#4a90e2;color:#ffffff}
-  .divider{height:1px;background:#444;margin:4px 0}
+  .dropdown-item{padding:8px 12px;cursor:pointer;color:#F1F1F3;font-size:12px;border-radius:6px}
+  .dropdown-item:hover{background:#DDB892;color:#0B0B0D} /* GOLD BG, BLACK TEXT */
+  .divider{height:1px;background:#23232A;margin:6px 0}
   
   /* LAYOUT */
-  .workspace{display:flex;flex:1;overflow:hidden} /* overflow only here */
-  .left-toolbar{width:60px;background:#2d2d2d;border-right:1px solid #222;padding:8px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
-  .tool-icon{width:40px;height:40px;background:#3a3a3a;border:1px solid #444444;border-radius:4px;color:#cccccc;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
-  .tool-icon:hover{background:#4a90e2;color:#ffffff}
-  .tool-icon.active{background:#4a90e2;color:#ffffff}
-  .center{flex:1;background:#1a2a4a;position:relative}
+  .workspace{display:flex;flex:1;overflow:hidden}
+  .left-toolbar{width:70px;background:#141416;border-right:1px solid #23232A;padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .tool-icon{width:44px;height:44px;background:#1C1C20;border:1px solid #23232A;border-radius:10px;color:#DDB892;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:0.2s}
+  .tool-icon:hover{background:#DDB892;color:#0B0B0D} /* GOLD HOVER */
+  .tool-icon.active{background:#DDB892;color:#0B0B0D}
+  .center{flex:1;background:#0B0B0D;position:relative} /* BLACK CANVAS */
   #canvas{width:100%;height:100%;display:block}
-  .right-panel{width:250px;background:#2d2d2d;border-left:1px solid #222;padding:10px;overflow-y:auto}
-  .panel-sec{margin-bottom:15px}
-  .panel-sec h4{background:#3a3a3a;padding:6px 8px;font-size:11px;color:#eeeeee;margin-bottom:5px;font-weight:normal}
-  .layer-item{padding:4px 8px;font-size:12px;color:#cccccc}
+  .right-panel{width:280px;background:#141416;border-left:1px solid #23232A;padding:16px;overflow-y:auto}
+  .panel-sec{margin-bottom:16px}
+  .panel-sec h4{background:#1C1C20;padding:8px 12px;font-size:11px;color:#DDB892;margin-bottom:8px;border-radius:6px;font-weight:600;letter-spacing:0.5px}
+  .layer-item{padding:6px 10px;font-size:13px;color:#A1A1AA;border-radius:6px}
+  .layer-item:hover{background:#23232A;color:#F1F1F3}
 </style>
 <script type="importmap">{"imports": {"three": "https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 </head>
@@ -52,7 +54,7 @@
       <div class="tool-icon" title="Rotate">↻</div>
       <div class="tool-icon" title="Measure">📐</div>
       <div class="tool-icon" title="Cut">✂️</div>
-      <div class="tool-icon" title="Paint">🖌️</div>
+      <div class="tool-icon" title="Paint">🎨</div>
     </div>
 
     <div class="center"><canvas id="canvas"></canvas></div>
@@ -69,7 +71,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x1a2a4a);
+scene.background = new THREE.Color(0x0B0B0D); // BLACK CANVAS
 const canvas = document.getElementById('canvas');
 const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
@@ -78,15 +80,15 @@ renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0,1.5,4);
 controls.target.set(0,1,0);
-scene.add(new THREE.AmbientLight(0xffffff, 1));
+scene.add(new THREE.AmbientLight(0xffffff, 0.8));
 
-// WHITE WIREFRAME
+// GOLD WIREFRAME LIKE LUXURY BRAND
 const cylGeo = new THREE.CylinderGeometry(0.4, 0.4, 2, 16, 1, true);
-const wireMat = new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true});
-scene.add(new THREE.Mesh(cylGeo, wireMat));
+const goldMat = new THREE.MeshBasicMaterial({color:0xDDB892, wireframe:true}); // GOLD
+scene.add(new THREE.Mesh(cylGeo, goldMat));
 
 const headGeo = new THREE.SphereGeometry(0.4, 16, 16);
-const head = new THREE.Mesh(headGeo, wireMat);
+const head = new THREE.Mesh(headGeo, goldMat);
 head.position.y = 1.4;
 scene.add(head);
 
@@ -107,7 +109,7 @@ window.togglePanel = (side) => {
 window.exportPNG = () => {
   const link = document.createElement('a');
   link.href = canvas.toDataURL('image/png');
-  link.download = 'design.png';
+  link.download = 'atelier.png';
   link.click();
 }
 </script>
