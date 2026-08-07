@@ -20,18 +20,19 @@
   .model-card:hover{border:2px solid #DDB892;transform:translateY(-5px)}
   .model-preview{width:100%;height:340px;background:#111;border-radius:10px;overflow:hidden;position:relative}
   
-  /* HOVER MEASUREMENTS OVERLAY */
+  /* HOVER MEASUREMENTS OVERLAY - FIXED */
   .measurements{
     position:absolute;top:0;left:0;width:100%;height:100%;
     background:rgba(0,0,0,0.85);color:#DDB892;
     display:flex;flex-direction:column;justify-content:center;align-items:center;
     opacity:0;transition:0.3s;pointer-events:none;
-    font-size:0.9rem;font-weight:600;line-height:1.8
+    font-size:0.9rem;font-weight:600;line-height:1.8;
+    z-index: 99; /* <-- THIS PUTS IT ON TOP OF THE 3D */
   }
   .model-card:hover .measurements{opacity:1}
   .measurements h3{color:#fff;margin-bottom:10px;font-size:1.1rem}
   
-  .model-card button{background:#DDB892;color:#0F0F0F;border:none;padding:12px 20px;border-radius:8px;margin-top:15px;cursor:pointer;font-size:1rem;width:100%;font-weight:700}
+  .model-card button{background:#DDB892;color:#0F0F0F;border:none;padding:12px 20px;border-radius:8px;margin-top:15px;cursor:pointer;font-size:1rem;width:100%;font-weight:700;position:relative;z-index:100} /* <-- BUTTON STAYS CLICKABLE */
   .customize-link{text-align:center;margin-top:25px}
   .customize-link button{background:#0F0F0F;border:none;color:#DDB892;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600}
   @media(max-width:1000px){.model-grid{grid-template-columns:1fr;gap:20px}}
