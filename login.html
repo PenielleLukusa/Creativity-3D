@@ -37,9 +37,9 @@
   <div class="main">
     <div class="avatar"></div>
     <h2>Fill out your information below</h2>
-    <input type="email" placeholder="Email Address">
-    <input type="password" placeholder="Password">
-    <button class="btn" onclick="window.location.href='workspace.html'">Login</button>
+    <input type="email" id="email" placeholder="Email Address" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button class="btn" id="loginBtn">Login</button>
 
     <div class="social">
       <button class="social-btn">Google</button>
@@ -48,5 +48,36 @@
       <button class="social-btn">Instagram</button>
     </div>
   </div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQF_gA_isYuLQWE8zTFuKKhMuDGO3Epcg",
+    authDomain: "creativity-3d.firebaseapp.com",
+    projectId: "creativity-3d",
+    storageBucket: "creativity-3d.firebasestorage.app",
+    messagingSenderId: "489202381387",
+    appId: "1:489202381387:web:f9f89c85c53fba83f8d3ce"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      alert("Login Successful!");
+      window.location.href = "home.html"; // go to landing page
+    } catch (error) {
+      alert("Error: " + error.message);
+      console.error("LOGIN ERROR:", error.code, error.message);
+    }
+  });
+</script>
 </body>
 </html>
