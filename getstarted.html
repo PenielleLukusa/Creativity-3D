@@ -10,14 +10,27 @@
   .nav{display:flex;gap:10px;background:#1A1A1A;padding:8px 20px;border-radius:30px;width:fit-content;margin:15px auto}
   .nav button{background:transparent;border:none;color:#A0A0A0;padding:8px 20px;border-radius:20px;cursor:pointer;font-size:0.9rem}
   .nav button.active{background:#DDB892;color:#0F0F0F;font-weight:600}
+  
   .container{background:#DDB892;color:#0F0F0F;max-width:1200px;margin:30px auto;padding:40px;border-radius:16px;box-shadow:0 8px 30px rgba(221,184,146,0.3)}
   h1{font-size:1.3rem;margin-bottom:20px;font-weight:600}
   h2{text-align:center;margin:10px 0 30px;font-weight:600;font-size:1.5rem}
+  
   .model-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:30px;margin-bottom:30px}
-  .model-card{background:#0F0F0F;border-radius:12px;padding:20px;text-align:center;transition:0.3s}
+  .model-card{background:#0F0F0F;border-radius:12px;padding:20px;text-align:center;transition:0.3s;position:relative;overflow:hidden}
   .model-card:hover{border:2px solid #DDB892;transform:translateY(-5px)}
-  .model-preview{width:100%;height:340px;background:#111;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-  .error-text{color:#ff6b6b;font-size:0.8rem;padding:10px}
+  .model-preview{width:100%;height:340px;background:#111;border-radius:10px;overflow:hidden;position:relative}
+  
+  /* HOVER MEASUREMENTS OVERLAY */
+  .measurements{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.85);color:#DDB892;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    opacity:0;transition:0.3s;pointer-events:none;
+    font-size:0.9rem;font-weight:600;line-height:1.8
+  }
+  .model-card:hover .measurements{opacity:1}
+  .measurements h3{color:#fff;margin-bottom:10px;font-size:1.1rem}
+  
   .model-card button{background:#DDB892;color:#0F0F0F;border:none;padding:12px 20px;border-radius:8px;margin-top:15px;cursor:pointer;font-size:1rem;width:100%;font-weight:700}
   .customize-link{text-align:center;margin-top:25px}
   .customize-link button{background:#0F0F0F;border:none;color:#DDB892;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600}
@@ -41,11 +54,51 @@
     <h1>Get started</h1>
     <h2>Choose your model</h2>
     <div class="model-grid">
-      <div class="model-card"><div class="model-preview" id="canvas1"></div><button onclick="window.location.href='workspace.html'">Select</button></div>
-      <div class="model-card"><div class="model-preview" id="canvas2"></div><button onclick="window.location.href='workspace.html'">Select</button></div>
-      <div class="model-card"><div class="model-preview" id="canvas3"></div><button onclick="window.location.href='workspace.html'">Select</button></div>
+      <!-- CARD 1 -->
+      <div class="model-card">
+        <div class="model-preview" id="canvas1">
+          <div class="measurements">
+            <h3>FEMALE STANDARD</h3>
+            <p>Height: 170 cm</p>
+            <p>Bust: 86 cm</p>
+            <p>Waist: 64 cm</p>
+            <p>Hips: 90 cm</p>
+          </div>
+        </div>
+        <button onclick="window.location.href='workspace.html'">Select</button>
+      </div>
+      
+      <!-- CARD 2 -->
+      <div class="model-card">
+        <div class="model-preview" id="canvas2">
+          <div class="measurements">
+            <h3>FEMALE CURVY</h3>
+            <p>Height: 168 cm</p>
+            <p>Bust: 94 cm</p>
+            <p>Waist: 72 cm</p>
+            <p>Hips: 100 cm</p>
+          </div>
+        </div>
+        <button onclick="window.location.href='workspace.html'">Select</button>
+      </div>
+      
+      <!-- CARD 3 -->
+      <div class="model-card">
+        <div class="model-preview" id="canvas3">
+          <div class="measurements">
+            <h3>FEMALE SLIM</h3>
+            <p>Height: 172 cm</p>
+            <p>Bust: 80 cm</p>
+            <p>Waist: 60 cm</p>
+            <p>Hips: 86 cm</p>
+          </div>
+        </div>
+        <button onclick="window.location.href='workspace.html'">Select</button>
+      </div>
     </div>
-    <div class="customize-link"><button onclick="alert('Customize coming soon')">Customize Your Own Model</button></div>
+    <div class="customize-link">
+      <button onclick="alert('Customize coming soon')">Customize Your Own Model</button>
+    </div>
   </div>
 
 <script type="module">
@@ -68,8 +121,6 @@ function loadMannequin(containerId){
   scene.add(light);
 
   const loader = new GLTFLoader();
-  
-  // FIX 1: FULL URL so github can load the .bin too
   const modelURL = 'https://penielelukusa.github.io/Creativity-3D/mannequin_female/manneqqin1.gltf';
   
   loader.load(modelURL, (gltf) => { 
@@ -84,10 +135,6 @@ function loadMannequin(containerId){
       renderer.render(scene, camera);
     }
     animate();
-  }, undefined, (error) => { 
-    // FIX 2: Show error instead of blank
-    console.error('GLTF ERROR:', error);
-    container.innerHTML = '<p class="error-text">Model failed to load<br>Check github path</p>';
   });
 }
 
