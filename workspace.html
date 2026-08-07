@@ -142,13 +142,13 @@
   const controls = new OrbitControls(camera, renderer.domElement);
   camera.position.set(0,1.3,3.5);
 
-  // GOLD LIGHTING
+  // GOLD LIGHTING to match brand
   scene.add(new THREE.AmbientLight(0xDDB892, 0.4));
   const light = new THREE.DirectionalLight(0xDDB892, 1.2);
   light.position.set(2,3,2);
   scene.add(light);
 
-  // LOAD HUMAN MANNEQUIN
+  // LOAD HUMAN MANNEQUIN WITH WIREFRAME
   const loader = new GLTFLoader();
   const modelURL = 'https://penielelukusa.github.io/Creativity-3D/mannequin_female/manneqqin1.gltf';
   let mannequin;
@@ -156,22 +156,30 @@
   loader.load(modelURL, (gltf) => { 
     mannequin = gltf.scene;
     
-    // MAKE IT WIREFRAME LIKE YOUR SCREENSHOT
+    // MAKE IT WIREFRAME MESH LIKE THE CUBE
     mannequin.traverse((child) => {
       if (child.isMesh) {
         child.material.wireframe = true;
-        child.material.color.set(0xffffff); // white wireframe
+        child.material.color.set(0xffffff);
       }
     });
 
     mannequin.scale.set(1.8, 1.8, 1.8);
     mannequin.position.y = -0.5;
     scene.add(mannequin);
+  }, undefined, (error) => {
+    console.error('GLTF Load Error:', error);
+    // Fallback cylinder if human fails
+    const body = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.4, 0.5, 2, 16),
+      new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true})
+    );
+    scene.add(body);
   });
 
   function animate(){
     requestAnimationFrame(animate);
-    if(mannequin) mannequin.rotation.y += 0.003; // auto rotate
+    if(mannequin) mannequin.rotation.y += 0.003; // slow auto rotate
     controls.update();
     renderer.render(scene,camera);
   }
