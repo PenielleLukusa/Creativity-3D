@@ -16,43 +16,11 @@
   input{width:300px;max-width:90%;padding:12px;margin:8px 0;background:#1A1A1A;border:1px solid #333;border-radius:8px;color:#F5F5F5}
   .btn{background:#DDB892;color:#0F0F0F;border:none;padding:12px 30px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:10px}
   .btn:hover{background:#E8DCCA}
-  .social{display:flex;gap:10px;margin-top:30px}
-  .social-btn{background:#1A1A1A;border:1px solid #333;padding:8px 16px;border-radius:20px;font-size:0.8rem;cursor:pointer;color:#F5F5F5}
   .tabs{position:absolute;top:20px;right:40px;display:flex;gap:10px}
   .tab{padding:8px 20px;border-radius:6px;background:#2a2a2a;cursor:pointer}
   .tab.active{background:#DDB892;color:#0F0F0F}
   @media(max-width:768px){.side{display:none}}
 </style>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCQF_gA_isYuLQWE8zTFuKKhMuDGO3Epcg",
-    authDomain: "creativity-3d.firebaseapp.com",
-    projectId: "creativity-3d",
-    storageBucket: "creativity-3d.firebasestorage.app",
-    messagingSenderId: "489202381387",
-    appId: "1:489202381387:web:f9f89c85c53fba83f8d3ce"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  window.handleSignup = async () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const name = document.getElementById('name').value;
-    
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert("Account Created Successfully!");
-      window.location.href = "home.html"; // go to landing page
-    } catch (error) {
-      alert("Error: " + error.message);
-    }
-  }
-</script>
 </head>
 <body>
   <div class="tabs">
@@ -69,15 +37,40 @@
     <h2>Fill out your information below</h2>
     <input type="text" id="name" placeholder="Full Name" required>
     <input type="email" id="email" placeholder="Email Address" required>
-    <input type="password" id="password" placeholder="Password" required>
-    <button class="btn" onclick="handleSignup()">Create</button>
-
-    <div class="social">
-      <button class="social-btn">Google</button>
-      <button class="social-btn">Facebook</button>
-      <button class="social-btn">Apple</button>
-      <button class="social-btn">Instagram</button>
-    </div>
+    <input type="password" id="password" placeholder="Password - min 6 chars" required>
+    <button class="btn" id="createBtn">Create</button>
   </div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQF_gA_isYuLQWE8zTFuKKhMuDGO3Epcg",
+    authDomain: "creativity-3d.firebaseapp.com",
+    projectId: "creativity-3d",
+    storageBucket: "creativity-3d.firebasestorage.app",
+    messagingSenderId: "489202381387",
+    appId: "1:489202381387:web:f9f89c85c53fba83f8d3ce"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  document.getElementById('createBtn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("SUCCESS:", userCredential.user);
+      alert("Account Created Successfully!");
+      window.location.href = "home.html";
+    } catch (error) {
+      console.error("FIREBASE ERROR:", error.code, error.message);
+      alert("Error: " + error.message);
+    }
+  });
+</script>
 </body>
 </html>
