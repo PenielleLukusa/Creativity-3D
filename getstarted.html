@@ -1,31 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get Started - Creativity</title>
-<style>/* same base CSS as home */ 
-.grid{display:flex;gap:20px;justify-content:center;margin:40px 0;flex-wrap:wrap}
-.card{background:#1A1A1A;padding:20px;border-radius:12px;width:200px;cursor:pointer;border:2px solid transparent}
-.card:hover{border-color:#DDB892}
-.card img{width:100%;background:#2a2a2a;height:300px;border-radius:8px}
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0F0F0F;color:#F5F5F5}
+  .nav{padding:15px 40px;display:flex;justify-content:center;gap:20px;background:#1A1A1A;border-bottom:1px solid #2a2a2a}
+  .nav button{background:#2a2a2a;color:#aaa;border:none;padding:8px 20px;border-radius:20px;cursor:pointer;font-size:0.9rem}
+  .nav button.active{background:#DDB892;color:#0F0F0F}
+  
+  .container{max-width:1200px;margin:0 auto;padding:30px 20px}
+  h1{font-size:1.2rem;margin-bottom:20px;font-weight:400}
+  h2{text-align:center;margin:20px 0;font-weight:400;color:#F5F5F5}
+
+  /* PAGE 1: CHOOSE MODEL */
+  .model-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:25px;margin-bottom:40px}
+  .model-card{background:#1A1A1A;border-radius:12px;padding:15px;cursor:pointer;border:2px solid transparent;transition:0.3s}
+  .model-card:hover{border-color:#DDB892}
+  .model-preview{width:100%;height:350px;background:#2a2a2a;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#666}
+  .model-card p{text-align:center;margin-top:10px;color:#aaa}
+  
+  .customize-btn{text-align:center}
+  .btn-outline{background:transparent;border:1px solid #DDB892;color:#DDB892;padding:10px 30px;border-radius:6px;cursor:pointer}
+
+  /* PAGE 2: CUSTOMIZE */
+  .customize-wrapper{display:none;gap:20px}
+  .side-left{width:180px;background:#1A1A1A;padding:20px;border-radius:12px}
+  .side-left button{width:100%;background:#2a2a2a;color:#F5F5F5;border:1px solid #333;padding:10px;border-radius:6px;margin:5px 0;cursor:pointer}
+  .side-left button.active{background:#DDB892;color:#0F0F0F}
+  
+  .viewer{flex:1;background:#1A1A1A;border-radius:12px;display:flex;align-items:center;justify-content:center;height:500px}
+  
+  .side-right{width:250px;background:#1A1A1A;padding:20px;border-radius:12px}
+  .measurements input{width:100%;margin:6px 0;padding:8px;background:#0F0F0F;border:1px solid #333;border-radius:6px;color:#F5F5F5;font-size:0.85rem}
+  .measurements label{font-size:0.75rem;color:#aaa}
+  
+  .btn-create{background:#DDB892;color:#0F0F0F;border:none;padding:12px;width:100%;border-radius:8px;font-weight:600;cursor:pointer;margin-top:20px}
+  .btn-back{background:transparent;border:1px solid #444;color:#aaa;padding:8px 16px;border-radius:6px;cursor:pointer;margin-bottom:15px}
+  @media(max-width:1000px){.customize-wrapper{flex-direction:column}}
 </style>
 </head>
 <body>
-  <div class="avatar"></div>
-  <div class="nav"><button class="active">Home</button><button>Explore</button><button>Gallery</button><button>Marketplace</button></div>
-  
-  <div style="max-width:1000px;margin:40px auto;padding:20px">
-    <h2>Get started</h2>
-    <div style="background:#1A1A1A;padding:30px;border-radius:16px;margin-top:20px">
-      <h3 style="text-align:center;margin-bottom:20px">Choose your model</h3>
-      <div class="grid">
-        <div class="card" onclick="localStorage.setItem('model','male');window.location.href='workspace.html'"><div style="background:#2a2a2a;height:300px"></div><p>Select</p></div>
-        <div class="card" onclick="localStorage.setItem('model','female');window.location.href='workspace.html'"><div style="background:#2a2a2a;height:300px"></div><p>Select</p></div>
-        <div class="card" onclick="localStorage.setItem('model','kids');window.location.href='workspace.html'"><div style="background:#2a2a2a;height:300px"></div><p>Select</p></div>
+  <div class="nav">
+    <button class="active">Home</button>
+    <button>Explore</button>
+    <button>Gallery</button>
+    <button>MarketPlace</button>
+  </div>
+
+  <div class="container">
+    <!-- PAGE 1: CHOOSE MODEL -->
+    <div id="choosePage">
+      <h1>Get started</h1>
+      <h2>Choose your model</h2>
+      <div class="model-grid">
+        <div class="model-card" onclick="selectPreset('female')">
+          <div class="model-preview">[Female Wireframe]</div>
+          <p>Female</p>
+        </div>
+        <div class="model-card" onclick="selectPreset('male')">
+          <div class="model-preview">[Male Wireframe]</div>
+          <p>Male</p>
+        </div>
+        <div class="model-card" onclick="selectPreset('nonbinary')">
+          <div class="model-preview">[Non-binary Wireframe]</div>
+          <p>Non-binary</p>
+        </div>
       </div>
-      <p style="text-align:center;margin-top:20px">Customize Your own model</p>
-      <button class="btn" style="display:block;margin:10px auto" onclick="window.location.href='customize.html'">Create your Own</button>
+      <div class="customize-btn">
+        <button class="btn-outline" onclick="showCustomize('custom')">Customize Your Own Model</button>
+      </div>
+    </div>
+
+    <!-- PAGE 2: CUSTOMIZE -->
+    <div id="customizePage" class="customize-wrapper">
+      <div style="width:100%">
+        <button class="btn-back" onclick="showChoose()">← Back</button>
+        <h2>Customize your own model</h2>
+      </div>
+      
+      <div class="side-left">
+        <div style="display:flex;gap:8px;margin-bottom:15px">
+          <button>Skin</button>
+          <button>Size</button>
+        </div>
+        <button class="gender-btn active" onclick="selectGender('male')">Male</button>
+        <button class="gender-btn" onclick="selectGender('female')">Female</button>
+        <button class="gender-btn" onclick="selectGender('nonbinary')">Non-binary</button>
+        <button class="btn-create" id="createBtn">Create</button>
+      </div>
+
+      <div class="viewer"><p>3D Model Preview</p></div>
+
+      <div class="side-right measurements">
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+          <span>Point of Measurement</span><span>Inches</span>
+        </div>
+        <label>Bust/Chest Circumference</label><input placeholder="0">
+        <label>Under-Bust Circumference</label><input placeholder="0">
+        <label>Waist Circumference</label><input placeholder="0">
+        <label>Hip Circumference</label><input placeholder="0">
+        <label>Neck Circumference</label><input placeholder="0">
+        <label>Shoulder Width</label><input placeholder="0">
+        <label>Across Back Width</label><input placeholder="0">
+        <label>Total Height</label><input placeholder="0">
+        <button style="width:100%;margin-top:10px;background:#2a2a2a;border:1px solid #333;color:#F5F5F5;padding:8px;border-radius:6px">More options</button>
+      </div>
     </div>
   </div>
+
+<script>
+let selectedGender = 'female';
+
+function showCustomize(gender) {
+  selectedGender = gender;
+  document.getElementById('choosePage').style.display = 'none';
+  document.getElementById('customizePage').style.display = 'flex';
+}
+
+function showChoose() {
+  document.getElementById('choosePage').style.display = 'block';
+  document.getElementById('customizePage').style.display = 'none';
+}
+
+function selectPreset(gender) {
+  window.location.href = `workspace.html?gender=${gender}`;
+}
+
+function selectGender(gender) {
+  selectedGender = gender;
+  document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+document.getElementById('createBtn').addEventListener('click', () => {
+  const inputs = document.querySelectorAll('.measurements input');
+  const params = new URLSearchParams();
+  params.append('gender', selectedGender);
+  params.append('bust', inputs[0].value);
+  params.append('underbust', inputs[1].value);
+  params.append('waist', inputs[2].value);
+  params.append('hip', inputs[3].value);
+  params.append('neck', inputs[4].value);
+  params.append('shoulder', inputs[5].value);
+  params.append('back', inputs[6].value);
+  params.append('height', inputs[7].value);
+  
+  window.location.href = `workspace.html?${params.toString()}`;
+});
+</script>
 </body>
 </html>
