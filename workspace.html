@@ -18,9 +18,7 @@
     position:relative;
     z-index:100;
   }
-  .menu{
-    position:relative;
-  }
+  .menu{position:relative;}
   .menu-title{
     padding:10px 14px;
     cursor:pointer;
@@ -46,7 +44,7 @@
   .menu:hover .dropdown{display:block}
   .dropdown-item{
     padding:8px 15px;
-    cursor:pointer;
+    cursor:default; /* changed from pointer */
     color:#F5F5F5;
     font-size:0.85rem;
   }
@@ -85,55 +83,55 @@
     <div class="menu">
       <div class="menu-title">File</div>
       <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('New Design')">New Design</div>
-        <div class="dropdown-item" onclick="alert('Open')">Open</div>
-        <div class="dropdown-item" onclick="alert('Save')">Save</div>
-        <div class="dropdown-item" onclick="alert('Save as GLB')">Save as GLB</div>
+        <div class="dropdown-item">New Design</div>
+        <div class="dropdown-item">Open</div>
+        <div class="dropdown-item">Save</div>
+        <div class="dropdown-item">Save as GLB</div>
         <div class="dropdown-divider"></div>
-        <div class="dropdown-item" onclick="alert('Export PNG')">Export as PNG</div>
-        <div class="dropdown-item" onclick="alert('Export Video')">Export as Video</div>
+        <div class="dropdown-item">Export as PNG</div>
+        <div class="dropdown-item">Export as Video</div>
       </div>
     </div>
 
     <div class="menu">
       <div class="menu-title">Edit</div>
       <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Undo')">Undo</div>
-        <div class="dropdown-item" onclick="alert('Redo')">Redo</div>
+        <div class="dropdown-item">Undo</div>
+        <div class="dropdown-item">Redo</div>
         <div class="dropdown-divider"></div>
-        <div class="dropdown-item" onclick="alert('Cut')">Cut</div>
-        <div class="dropdown-item" onclick="alert('Copy')">Copy</div>
-        <div class="dropdown-item" onclick="alert('Paste')">Paste</div>
-        <div class="dropdown-item" onclick="alert('Delete')">Delete</div>
+        <div class="dropdown-item">Cut</div>
+        <div class="dropdown-item">Copy</div>
+        <div class="dropdown-item">Paste</div>
+        <div class="dropdown-item">Delete</div>
       </div>
     </div>
 
     <div class="menu">
       <div class="menu-title">Layout</div>
       <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Show Comments')">Show Comments</div>
-        <div class="dropdown-item" onclick="alert('Show Grid')">Show Grid</div>
-        <div class="dropdown-item" onclick="alert('Snap to Grid')">Snap to Grid</div>
-        <div class="dropdown-item" onclick="alert('Auto Fit Fabric')">Auto Fit Fabric</div>
+        <div class="dropdown-item">Show Comments</div>
+        <div class="dropdown-item">Show Grid</div>
+        <div class="dropdown-item">Snap to Grid</div>
+        <div class="dropdown-item">Auto Fit Fabric</div>
       </div>
     </div>
 
     <div class="menu">
       <div class="menu-title">Image</div>
       <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Import Fabric Image')">Import Fabric Image</div>
-        <div class="dropdown-item" onclick="alert('Import Reference')">Import Reference Image</div>
-        <div class="dropdown-item" onclick="alert('Apply Texture')">Apply Texture to Model</div>
-        <div class="dropdown-item" onclick="alert('Remove Texture')">Remove Texture</div>
+        <div class="dropdown-item">Import Fabric Image</div>
+        <div class="dropdown-item">Import Reference Image</div>
+        <div class="dropdown-item">Apply Texture to Model</div>
+        <div class="dropdown-item">Remove Texture</div>
       </div>
     </div>
 
     <div class="menu">
       <div class="menu-title">Filter</div>
       <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Fabric Filters')">Fabric Filters</div>
-        <div class="dropdown-item" onclick="alert('Color Filters')">Color Filters</div>
-        <div class="dropdown-item" onclick="alert('Pattern Filters')">Pattern Filters</div>
+        <div class="dropdown-item">Fabric Filters</div>
+        <div class="dropdown-item">Color Filters</div>
+        <div class="dropdown-item">Pattern Filters</div>
       </div>
     </div>
 
@@ -142,28 +140,28 @@
       <div class="dropdown">
         <div class="dropdown-item" onclick="togglePanel('left')">Show Left Panel</div>
         <div class="dropdown-item" onclick="togglePanel('right')">Show Right Panel</div>
-        <div class="dropdown-item" onclick="alert('Fullscreen')">Fullscreen</div>
-        <div class="dropdown-item" onclick="alert('Show Measurements')">Show Measurements</div>
+        <div class="dropdown-item">Fullscreen</div>
+        <div class="dropdown-item">Show Measurements</div>
       </div>
     </div>
 
     <div class="menu">
       <div class="menu-title">Select</div>
       <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Select Model')">Select Model</div>
-        <div class="dropdown-item" onclick="alert('Select Part')">Select Part</div>
-        <div class="dropdown-item" onclick="alert('Select All')">Select All</div>
-        <div class="dropdown-item" onclick="alert('Deselect')">Deselect</div>
+        <div class="dropdown-item">Select Model</div>
+        <div class="dropdown-item">Select Part</div>
+        <div class="dropdown-item">Select All</div>
+        <div class="dropdown-item">Deselect</div>
       </div>
     </div>
 
     <div class="menu">
       <div class="menu-title">Window</div>
       <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('AI Chat')">AI Chat</div>
-        <div class="dropdown-item" onclick="alert('Layers')">Layers</div>
-        <div class="dropdown-item" onclick="alert('Fabric Panel')">Fabric Panel</div>
-        <div class="dropdown-item" onclick="alert('Properties')">Properties</div>
+        <div class="dropdown-item">AI Chat</div>
+        <div class="dropdown-item">Layers</div>
+        <div class="dropdown-item">Fabric Panel</div>
+        <div class="dropdown-item">Properties</div>
       </div>
     </div>
   </div>
@@ -244,7 +242,7 @@
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   });
 
-  // Toggle panels for View menu
+  // Only View menu works - hides/shows panels
   window.togglePanel = (side) => {
     const panel = document.getElementById(side + 'Panel');
     panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
