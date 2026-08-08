@@ -8,12 +8,17 @@
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
   body{background:#0B0B0D;color:#F1F1F3;height:100vh;display:flex;flex-direction:column}
 
-.topbar{background:#141416;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #23232A;font-size:13px;z-index:9999;position:relative}
+  /* ADDED HOME NAV */
+ .app-nav{display:flex;gap:10px;background:#1A1A1A;padding:8px 20px;border-radius:0 0 20px 20px;width:fit-content;margin:0 auto 10px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:10001}
+ .app-nav a{color:#A0A0A0;padding:6px 16px;border-radius:16px;text-decoration:none;font-size:12px}
+ .app-nav a:hover{background:#2a2a2a;color:#DDB892}
+
+.topbar{background:#141416;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #23232A;font-size:13px;z-index:9999;position:relative;margin-top:45px}
 .menu{position:relative}
 .menu-title{padding:10px 14px;cursor:pointer;color:#A1A1AA}
-.menu:hover.menu-title{background:#23232A;color:#DDB892}
+.menu:hover.menu-title{background:#23232A;color:#DDB892} /* FIXED HOVER */
 .dropdown{position:absolute;top:100%;left:0;background:#1C1C20;border:1px solid #23232A;border-radius:8px;min-width:220px;display:none;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:10000}
-.menu:hover.dropdown{display:block}
+.menu:hover.dropdown{display:block} /* FIXED HOVER */
 .dropdown-item{padding:8px 12px;cursor:pointer;color:#F1F1F3;font-size:12px;border-radius:6px}
 .dropdown-item:hover{background:#DDB892;color:#0B0B0D}
 .divider{height:1px;background:#23232A;margin:6px 0}
@@ -46,6 +51,13 @@
 <script type="importmap">{"imports": {"three": "https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
+  <!-- ADDED HOME NAV -->
+  <div class="app-nav">
+    <a href="home.html">Home</a>
+    <a href="explore.html">Explore</a>
+    <a href="atelier.html">Atelier</a>
+  </div>
+
   <div class="topbar">
     <div class="menu"><div class="menu-title">File</div><div class="dropdown">
       <div class="dropdown-item" onclick="alert('New Design')">New Design</div>
@@ -79,9 +91,9 @@
     <div class="center"><canvas id="canvas"></canvas></div>
     <div class="right-panel">
       <div class="panel-tabs">
-        <div class="tab active" onclick="switchTab('layers')">LAYERS</div>
-        <div class="tab" onclick="switchTab('gallery')">GALLERY</div>
-        <div class="tab" onclick="switchTab('marketplace')">MARKET</div>
+        <div class="tab active" data-tab="layers">LAYERS</div>
+        <div class="tab" data-tab="gallery">GALLERY</div>
+        <div class="tab" data-tab="marketplace">MARKET</div>
       </div>
       <div class="panel-content" id="panelContent"></div>
     </div>
@@ -113,8 +125,10 @@ function animate(){requestAnimationFrame(animate); controls.update(); renderer.r
 let gallery = JSON.parse(localStorage.getItem('atelierGallery')) || [];
 
 window.switchTab = (tab) => {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.remove('active');
+    if(t.dataset.tab === tab) t.classList.add('active'); // FIXED: no event.target
+  });
   const content = document.getElementById('panelContent');
 
   if(tab === 'layers'){
@@ -128,6 +142,11 @@ window.switchTab = (tab) => {
   }
 }
 
+// ADD CLICK LISTENERS TO TABS
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => switchTab(tab.dataset.tab))
+})
+
 function renderGallery(container, isMarket){
   let itemsToShow = isMarket? gallery.filter(item => item.published) : gallery;
 
@@ -139,12 +158,12 @@ function renderGallery(container, isMarket){
 
   let html = '<div class="gallery-grid">';
   itemsToShow.forEach((item, i) => {
-    let realIndex = gallery.indexOf(item); // get real index for delete/publish
+    let realIndex = gallery.indexOf(item);
     html += `<div class="gallery-item">
       <img src="${item.image}" />
       <p>${item.name}<br><span style="color:#666;font-size:9px">${item.date}</span></p>
       ${isMarket
-       ? `<button class="gallery-btn" disabled>Published ✓</button>`
+      ? `<button class="gallery-btn" disabled>Published ✓</button>`
         : `<button class="gallery-btn" onclick="publishItem(${realIndex})">Publish to Market</button>
            <button class="gallery-btn delete" onclick="deleteItem(${realIndex})">Delete</button>`
       }
@@ -157,16 +176,11 @@ function renderGallery(container, isMarket){
 window.saveToGallery = () => {
   renderer.render(scene, camera);
   const image = canvas.toDataURL('image/png');
-  const newItem = {
-    name: 'Design ' + (gallery.length + 1),
-    image: image,
-    date: new Date().toLocaleDateString(),
-    published: false
-  };
+  const newItem = {name: 'Design ' + (gallery.length + 1), image: image, date: new Date().toLocaleDateString(), published: false};
   gallery.push(newItem);
   localStorage.setItem('atelierGallery', JSON.stringify(gallery));
   alert('✅ Saved to Gallery!');
-  document.querySelectorAll('.tab')[1].click(); // auto switch to gallery
+  switchTab('gallery');
 }
 
 window.publishItem = (i) => {
@@ -190,8 +204,18 @@ window.exportPNG = () => {
   link.click();
 }
 
+// AUTO OPEN TAB FROM HOME
+window.addEventListener('load', () => {
+  const tabToOpen = localStorage.getItem('openTab');
+  if(tabToOpen){
+    switchTab(tabToOpen);
+    localStorage.removeItem('openTab');
+  } else {
+    switchTab('layers'); // default
+  }
+})
+
 window.addEventListener('resize', ()=>{camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();renderer.setSize(canvas.clientWidth,canvas.clientHeight)});
-switchTab('layers'); // load layers first
 </script>
 </body>
 </html>
