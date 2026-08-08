@@ -29,7 +29,12 @@
     padding:8px 20px;
     border-radius:20px;
     cursor:pointer;
-    font-size:0.9rem
+    font-size:0.9rem;
+    transition:0.2s
+  }
+ .nav button:hover{
+    background:#2a2a2a;
+    color:#DDB892
   }
  .nav button.active{
     background:#DDB892;
@@ -99,10 +104,10 @@
 </head>
 <body>
   <div class="nav">
-    <button class="active">Home</button>
-    <button>Explore</button>
-    <button>Gallery</button>
-    <button>Marketplace</button>
+    <button class="active" onclick="goHome()">Home</button>
+    <button onclick="goExplore()">Explore</button>
+    <button onclick="goGallery()">Gallery</button>
+    <button onclick="goMarketplace()">Marketplace</button>
   </div>
 
   <div class="content">
@@ -111,7 +116,7 @@
       With a 3D mannequin<br>
       And export it for your future projects
     </p>
-    <button class="btn" onclick="window.location.href='getstarted.html'">Get started</button>
+    <button class="btn" onclick="goExplore()">Get started</button>
 
     <div class="bubble">
       <p>
@@ -120,8 +125,30 @@
         and texture?</b><br>
         We got you
       </p>
-      <button class="btn">Create</button>
+      <button class="btn" onclick="goExplore()">Create</button>
     </div>
   </div>
+
+<script>
+// NAVIGATION FUNCTIONS
+function goHome(){
+  window.location.href = 'home.html';
+}
+function goExplore(){
+  window.location.href = 'atelier.html'; // this is your 3D app file
+}
+function goGallery(){
+  window.location.href = 'atelier.html'; // opens app and auto-switches to gallery tab
+  localStorage.setItem('openTab', 'gallery');
+}
+function goMarketplace(){
+  window.location.href = 'atelier.html'; // opens app and auto-switches to market tab
+  localStorage.setItem('openTab', 'marketplace');
+}
+
+// Set active nav based on current page
+document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+document.querySelector('.nav button:nth-child(1)').classList.add('active');
+</script>
 </body>
 </html>
