@@ -11,9 +11,9 @@
 .topbar{background:#141416;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #23232A;font-size:13px;z-index:9999;position:relative}
 .menu{position:relative}
 .menu-title{padding:10px 14px;cursor:pointer;color:#A1A1AA}
-.menu:hover.menu-title{background:#23232A;color:#DDB892} /* FIXED THE SPACE */
+.menu:hover .menu-title{background:#23232A;color:#DDB892} /* ADDED SPACE */
 .dropdown{position:absolute;top:100%;left:0;background:#1C1C20;border:1px solid #23232A;border-radius:8px;min-width:220px;display:none;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:10000}
-.menu:hover.dropdown{display:block} /* FIXED THE SPACE */
+.menu:hover .dropdown{display:block} /* ADDED SPACE */
 .dropdown-item{padding:8px 12px;cursor:pointer;color:#F1F1F3;font-size:12px;border-radius:6px}
 .dropdown-item:hover{background:#DDB892;color:#0B0B0D}
 .divider{height:1px;background:#23232A;margin:6px 0}
@@ -35,7 +35,7 @@
 .panel-sec h4{background:#1C1C20;padding:8px 10px;font-size:11px;color:#DDB892;margin-bottom:6px;border-radius:6px;font-weight:600}
 .layer-item{padding:5px 8px;font-size:12px;color:#A1A1AA}
 
-  /* GALLERY */
+/* GALLERY */
 .gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gallery-item{background:#1C1C20;border:1px solid #23232A;border-radius:8px;padding:8px}
 .gallery-item img{width:100%;border-radius:6px;background:#0B0B0D;border:1px solid #23232A}
@@ -61,97 +61,70 @@
     </div>
 
     <!-- EDIT -->
-    <div class="menu">
-      <div class="menu-title">Edit</div>
-      <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Undo')">Undo</div>
-        <div class="dropdown-item" onclick="alert('Redo')">Redo</div>
-        <div class="divider"></div>
-        <div class="dropdown-item" onclick="alert('Cut')">Cut</div>
-        <div class="dropdown-item" onclick="alert('Copy')">Copy</div>
-        <div class="dropdown-item" onclick="alert('Paste')">Paste</div>
-        <div class="dropdown-item" onclick="alert('Delete')">Delete</div>
-      </div>
-    </div>
+    <div class="menu"><div class="menu-title">Edit</div><div class="dropdown">
+      <div class="dropdown-item" onclick="alert('Undo')">Undo</div>
+      <div class="dropdown-item" onclick="alert('Redo')">Redo</div>
+      <div class="divider"></div>
+      <div class="dropdown-item" onclick="alert('Cut')">Cut</div>
+      <div class="dropdown-item" onclick="alert('Copy')">Copy</div>
+      <div class="dropdown-item" onclick="alert('Paste')">Paste</div>
+      <div class="dropdown-item" onclick="alert('Delete')">Delete</div>
+    </div></div>
 
     <!-- LAYOUT -->
-    <div class="menu">
-      <div class="menu-title">Layout</div>
-      <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Show Comments')">Show Comments</div>
-        <div class="dropdown-item" onclick="alert('Show Grid')">Show Grid</div>
-        <div class="dropdown-item" onclick="alert('Snap to Grid')">Snap to Grid</div>
-        <div class="dropdown-item" onclick="alert('Auto Fit Fabric')">Auto Fit Fabric</div>
-      </div>
-    </div>
+    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown">
+      <div class="dropdown-item" onclick="alert('Show Comments')">Show Comments</div>
+      <div class="dropdown-item" onclick="alert('Show Grid')">Show Grid</div>
+      <div class="dropdown-item" onclick="alert('Snap to Grid')">Snap to Grid</div>
+      <div class="dropdown-item" onclick="alert('Auto Fit Fabric')">Auto Fit Fabric</div>
+    </div></div>
 
     <!-- IMAGE -->
-    <div class="menu">
-      <div class="menu-title">Image</div>
-      <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Import Fabric')">Import Fabric Image</div>
-        <div class="dropdown-item" onclick="alert('Import Reference')">Import Reference Image</div>
-        <div class="dropdown-item" onclick="alert('Apply Texture')">Apply Texture to Model</div>
-        <div class="dropdown-item" onclick="alert('Remove Texture')">Remove Texture</div>
-      </div>
-    </div>
+    <div class="menu"><div class="menu-title">Image</div><div class="dropdown">
+      <div class="dropdown-item" onclick="alert('Import Fabric')">Import Fabric Image</div>
+      <div class="dropdown-item" onclick="alert('Import Reference')">Import Reference Image</div>
+      <div class="dropdown-item" onclick="alert('Apply Texture')">Apply Texture to Model</div>
+      <div class="dropdown-item" onclick="alert('Remove Texture')">Remove Texture</div>
+    </div></div>
 
     <!-- FILTER -->
-    <div class="menu">
-      <div class="menu-title">Filter</div>
-      <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Fabric Filters')">Fabric Filters</div>
-        <div class="dropdown-item" onclick="alert('Color Filters')">Color Filters</div>
-        <div class="dropdown-item" onclick="alert('Pattern Filters')">Pattern Filters</div>
-      </div>
-    </div>
+    <div class="menu"><div class="menu-title">Filter</div><div class="dropdown">
+      <div class="dropdown-item" onclick="alert('Fabric Filters')">Fabric Filters</div>
+      <div class="dropdown-item" onclick="alert('Color Filters')">Color Filters</div>
+      <div class="dropdown-item" onclick="alert('Pattern Filters')">Pattern Filters</div>
+    </div></div>
 
     <!-- VIEW -->
-    <div class="menu">
-      <div class="menu-title">View</div>
-      <div class="dropdown">
-        <div class="dropdown-item" onclick="switchTab('layers')">Show Left Panel</div>
-        <div class="dropdown-item" onclick="switchTab('gallery')">Show Right Panel</div>
-        <div class="dropdown-item" onclick="toggleFullscreen()">Fullscreen</div>
-        <div class="dropdown-item" onclick="alert('Show Measurements')">Show Measurements</div>
-      </div>
-    </div>
+    <div class="menu"><div class="menu-title">View</div><div class="dropdown">
+      <div class="dropdown-item" onclick="switchTab('layers')">Show Left Panel</div>
+      <div class="dropdown-item" onclick="switchTab('gallery')">Show Right Panel</div>
+      <div class="dropdown-item" onclick="toggleFullscreen()">Fullscreen</div>
+      <div class="dropdown-item" onclick="alert('Show Measurements')">Show Measurements</div>
+    </div></div>
 
     <!-- SELECT -->
-    <div class="menu">
-      <div class="menu-title">Select</div>
-      <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('Select Model')">Select Model</div>
-        <div class="dropdown-item" onclick="alert('Select Part')">Select Part</div>
-        <div class="dropdown-item" onclick="alert('Select All')">Select All</div>
-        <div class="dropdown-item" onclick="alert('Deselect')">Deselect</div>
-      </div>
-    </div>
+    <div class="menu"><div class="menu-title">Select</div><div class="dropdown">
+      <div class="dropdown-item" onclick="alert('Select Model')">Select Model</div>
+      <div class="dropdown-item" onclick="alert('Select Part')">Select Part</div>
+      <div class="dropdown-item" onclick="alert('Select All')">Select All</div>
+      <div class="dropdown-item" onclick="alert('Deselect')">Deselect</div>
+    </div></div>
 
     <!-- WINDOW -->
-    <div class="menu">
-      <div class="menu-title">Window</div>
-      <div class="dropdown">
-        <div class="dropdown-item" onclick="alert('AI Chat')">AI Chat</div>
-        <div class="dropdown-item" onclick="switchTab('layers')">Layers</div>
-        <div class="dropdown-item" onclick="alert('Fabric Panel')">Fabric Panel</div>
-        <div class="dropdown-item" onclick="alert('Properties')">Properties</div>
-      </div>
-    </div>
+    <div class="menu"><div class="menu-title">Window</div><div class="dropdown">
+      <div class="dropdown-item" onclick="alert('AI Chat')">AI Chat</div>
+      <div class="dropdown-item" onclick="switchTab('layers')">Layers</div>
+      <div class="dropdown-item" onclick="alert('Fabric Panel')">Fabric Panel</div>
+      <div class="dropdown-item" onclick="alert('Properties')">Properties</div>
+    </div></div>
   </div>
 
   <div class="workspace">
     <div class="left-toolbar" id="leftToolbar">
-      <div class="tool-icon active">↖</div>
-      <div class="tool-icon">✋</div>
-      <div class="tool-icon">↻</div>
-      <div class="tool-icon">📐</div>
-      <div class="tool-icon">✂️</div>
-      <div class="tool-icon">🎨</div>
+      <div class="tool-icon active">↖</div><div class="tool-icon">✋</div><div class="tool-icon">↻</div>
+      <div class="tool-icon">📐</div><div class="tool-icon">✂️</div><div class="tool-icon">🎨</div>
     </div>
-
     <div class="center"><canvas id="canvas"></canvas></div>
-
     <div class="right-panel">
       <div class="panel-tabs">
         <div class="tab active" onclick="switchTab('layers')">LAYERS</div>
@@ -188,9 +161,8 @@ const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), goldMat); s
 
 function animate(){requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera)} animate();
 
-// GALLERY
+// GALLERY + TABS
 let gallery = JSON.parse(localStorage.getItem('atelierGallery')) || [];
-
 window.switchTab = (tab) => {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
@@ -199,43 +171,15 @@ window.switchTab = (tab) => {
   if(tab === 'gallery'){ renderGallery(content, false); }
   if(tab === 'marketplace'){ renderGallery(content, true); }
 }
-
 function renderGallery(container, isMarket){
-  if(gallery.length === 0){ container.innerHTML = `<p style="font-size:12px;color:#A1A1AA;text-align:center;margin-top:20px">No designs yet.<br>Click File > Save to Gallery</p>`; return; }
+  if(gallery.length === 0){ container.innerHTML = `<p style="font-size:12px;color:#A1A1AA;text-align:center;margin-top:20px">No designs yet.</p>`; return; }
   let html = '<div class="gallery-grid">';
-  gallery.forEach((item, i) => {
-    html += `<div class="gallery-item"><img src="${item.image}" /><p>${item.name}<br><span style="color:#666">${item.date}</span></p>
-    ${isMarket? `<button class="gallery-btn" onclick="publishItem(${i})">${item.published? 'Published' : 'Publish'}</button>` : `<button class="gallery-btn" onclick="deleteItem(${i})">Delete</button>`}</div>`;
-  });
+  gallery.forEach((item, i) => { html += `<div class="gallery-item"><img src="${item.image}" /><p>${item.name}</p><button class="gallery-btn" onclick="deleteItem(${i})">Delete</button></div>`; });
   html += '</div>'; container.innerHTML = html;
 }
-
-window.saveToGallery = () => {
-  renderer.render(scene, camera);
-  const image = canvas.toDataURL('image/png');
-  const newItem = { name: 'Design ' + (gallery.length + 1), image: image, date: new Date().toLocaleDateString(), published: false };
-  gallery.push(newItem);
-  localStorage.setItem('atelierGallery', JSON.stringify(gallery));
-  alert('✅ Saved to Gallery!');
-  document.querySelectorAll('.tab')[1].click();
-}
-
-window.exportPNG = () => {
-  renderer.render(scene, camera);
-  const link = document.createElement('a');
-  link.href = canvas.toDataURL('image/png');
-  link.download = 'atelier-design.png';
-  link.click();
-}
-
-window.toggleFullscreen = () => {
-  if(!document.fullscreenElement){ document.documentElement.requestFullscreen(); }
-  else{ document.exitFullscreen(); }
-}
-
+window.exportPNG = () => { renderer.render(scene, camera); const link = document.createElement('a'); link.href = canvas.toDataURL('image/png'); link.download = 'atelier.png'; link.click(); }
+window.toggleFullscreen = () => { if(!document.fullscreenElement){ document.documentElement.requestFullscreen(); } else{ document.exitFullscreen(); } }
 window.deleteItem = (i) => { gallery.splice(i,1); localStorage.setItem('atelierGallery', JSON.stringify(gallery)); switchTab('gallery'); }
-window.publishItem = (i) => { gallery[i].published = true; localStorage.setItem('atelierGallery', JSON.stringify(gallery)); alert('✅ Published to Marketplace!'); switchTab('marketplace'); }
-
 window.addEventListener('resize', ()=>{camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();renderer.setSize(canvas.clientWidth,canvas.clientHeight)});
 </script>
 </body>
