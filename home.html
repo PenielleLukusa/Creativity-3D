@@ -1,75 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home - Creativity</title>
+<title>Atelier Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-  body{
-    background:#0F0F0F;
-    color:#F5F5F5;
-    min-height:100vh;
-    padding:20px;
-    background-image:repeating-linear-gradient(90deg,#DDB89210 0 1px,transparent 1px 20px)
-  }
- .nav{
-    display:flex;
-    gap:10px;
-    background:#1A1A1A;
-    padding:8px 20px;
-    border-radius:30px;
-    width:fit-content;
-    margin:0 auto
-  }
- .nav button{
-    background:transparent;
-    border:none;
-    color:#A0A0A0;
-    padding:8px 20px;
-    border-radius:20px;
-    cursor:pointer;
-    font-size:0.9rem;
-    transition:0.2s
-  }
- .nav button:hover{background:#2a2a2a;color:#DDB892}
- .nav button.active{background:#DDB892;color:#0F0F0F;font-weight:600}
- .content{max-width:900px;margin:80px auto;text-align:center}
-  h1{font-size:2.2rem;margin-bottom:15px;color:#DDB892;font-weight:600}
-  p.subtitle{color:#A0A0A0;line-height:1.8;font-size:1.1rem}
- .btn{background:#DDB892;color:#0F0F0F;border:none;padding:14px 36px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:25px;font-size:1.05rem;transition:0.2s}
- .btn:hover{background:#E8DCCA;transform:scale(1.03)}
- .bubble{background:#1A1A1A;border-radius:30px 30px 0 30px;padding:30px;margin-top:70px;max-width:420px;margin-left:auto;text-align:left;border:1px solid #2a2a2a}
- .bubble p{color:#F5F5F5;line-height:1.6}
- .bubble .btn{background:#F5F5F5;margin-top:15px;padding:10px 24px}
- .bubble .btn:hover{background:#E8E8E8}
-  @media(max-width:768px){.content{margin:60px 20px}h1{font-size:1.6rem}.bubble{margin-top:40px}}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+  body{background:#0B0B0D;color:#F1F1F3;height:100vh;display:flex;flex-direction:column}
+
+.topbar{background:#141416;padding:0 15px;display:flex;gap:0;border-bottom:1px solid #23232A;font-size:13px;z-index:9999;position:relative}
+.menu{position:relative}
+.menu-title{padding:10px 14px;cursor:pointer;color:#A1A1AA}
+.menu:hover.menu-title{background:#23232A;color:#DDB892}
+.dropdown{position:absolute;top:100%;left:0;background:#1C1C20;border:1px solid #23232A;border-radius:8px;min-width:220px;display:none;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:10000}
+.menu:hover.dropdown{display:block}
+.dropdown-item{padding:8px 12px;cursor:pointer;color:#F1F1F3;font-size:12px;border-radius:6px}
+.dropdown-item:hover{background:#DDB892;color:#0B0B0D}
+.divider{height:1px;background:#23232A;margin:6px 0}
+
+.workspace{display:flex;flex:1;overflow:hidden}
+.left-toolbar{width:60px;background:#141416;border-right:1px solid #23232A;padding:10px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.tool-icon{width:40px;height:40px;background:#1C1C20;border:1px solid #23232A;border-radius:8px;color:#DDB892;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.tool-icon:hover{background:#DDB892;color:#0B0B0D}
+.tool-icon.active{background:#DDB892;color:#0B0B0D}
+.center{flex:1;background:#0B0B0D;position:relative}
+  #canvas{width:100%;height:100%;display:block}
+
+.right-panel{width:300px;background:#141416;border-left:1px solid #23232A;display:flex;flex-direction:column}
+.panel-tabs{display:flex;border-bottom:1px solid #23232A}
+.tab{flex:1;padding:10px;text-align:center;font-size:11px;cursor:pointer;color:#A1A1AA;font-weight:600}
+.tab.active{background:#1C1C20;color:#DDB892;border-bottom:2px solid #DDB892}
+.panel-content{flex:1;overflow-y:auto;padding:12px}
+.panel-sec{margin-bottom:15px}
+.panel-sec h4{background:#1C1C20;padding:8px 10px;font-size:11px;color:#DDB892;margin-bottom:6px;border-radius:6px;font-weight:600}
+.layer-item{padding:5px 8px;font-size:12px;color:#A1A1AA}
+
+/* GALLERY + MARKET */
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gallery-item{background:#1C1C20;border:1px solid #23232A;border-radius:8px;padding:8px}
+.gallery-item img{width:100%;border-radius:6px;background:#0B0B0D;border:1px solid #23232A}
+.gallery-item p{font-size:10px;margin-top:5px;color:#DDB892}
+.gallery-btn{width:100%;padding:6px;background:#DDB892;color:#0B0B0D;border:none;border-radius:6px;font-size:10px;font-weight:600;margin-top:5px;cursor:pointer}
+.gallery-btn.delete{background:#444;color:#F1F1F3}
 </style>
+<script type="importmap">{"imports": {"three": "https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
-  <div class="nav">
-    <button class="active">Home</button>
-    <button onclick="goExplore()">Explore</button>
-    <button onclick="goGallery()">Gallery</button>
-    <button onclick="goMarketplace()">Marketplace</button>
+  <div class="topbar">
+    <div class="menu"><div class="menu-title">File</div><div class="dropdown">
+      <div class="dropdown-item" onclick="alert('New Design')">New Design</div>
+      <div class="dropdown-item" onclick="alert('Open')">Open</div>
+      <div class="dropdown-item" onclick="alert('Save')">Save</div>
+      <div class="dropdown-item" onclick="alert('Save GLB')">Save as GLB</div>
+      <div class="divider"></div>
+      <div class="dropdown-item" onclick="saveToGallery()">Save to Gallery</div>
+      <div class="dropdown-item" onclick="exportPNG()">Export as PNG</div>
+      <div class="dropdown-item" onclick="alert('Export Video')">Export as Video</div>
+    </div></div>
+
+    <div class="menu"><div class="menu-title">Edit</div><div class="dropdown"><div class="dropdown-item">Undo</div><div class="dropdown-item">Redo</div><div class="divider"></div><div class="dropdown-item">Cut</div><div class="dropdown-item">Copy</div><div class="dropdown-item">Paste</div><div class="dropdown-item">Delete</div></div></div>
+    <div class="menu"><div class="menu-title">Layout</div><div class="dropdown"><div class="dropdown-item">Show Comments</div><div class="dropdown-item">Show Grid</div><div class="dropdown-item">Snap to Grid</div><div class="dropdown-item">Auto Fit Fabric</div></div></div>
+    <div class="menu"><div class="menu-title">Image</div><div class="dropdown"><div class="dropdown-item">Import Fabric Image</div><div class="dropdown-item">Import Reference Image</div><div class="dropdown-item">Apply Texture to Model</div><div class="dropdown-item">Remove Texture</div></div></div>
+    <div class="menu"><div class="menu-title">Filter</div><div class="dropdown"><div class="dropdown-item">Fabric Filters</div><div class="dropdown-item">Color Filters</div><div class="dropdown-item">Pattern Filters</div></div></div>
+    <div class="menu"><div class="menu-title">View</div><div class="dropdown">
+      <div class="dropdown-item" onclick="switchTab('layers')">Layers</div>
+      <div class="dropdown-item" onclick="switchTab('gallery')">Gallery</div>
+      <div class="dropdown-item" onclick="switchTab('marketplace')">Marketplace</div>
+    </div></div>
+    <div class="menu"><div class="menu-title">Select</div><div class="dropdown"><div class="dropdown-item">Select Model</div><div class="dropdown-item">Select Part</div><div class="dropdown-item">Select All</div><div class="dropdown-item">Deselect</div></div></div>
+    <div class="menu"><div class="menu-title">Window</div><div class="dropdown"><div class="dropdown-item">AI Chat</div><div class="dropdown-item">Layers</div><div class="dropdown-item">Fabric Panel</div><div class="dropdown-item">Properties</div></div></div>
   </div>
 
-  <div class="content">
-    <h1>Build your Wardrobe</h1>
-    <p class="subtitle">With a 3D mannequin<br>And export it for your future projects</p>
-    <button class="btn" onclick="goExplore()">Get started</button>
-
-    <div class="bubble">
-      <p><b>Would you like to create<br>your own fabric design<br>and texture?</b><br>We got you</p>
-      <button class="btn" onclick="goExplore()">Create</button>
+  <div class="workspace">
+    <div class="left-toolbar">
+      <div class="tool-icon active">↖</div><div class="tool-icon">✋</div><div class="tool-icon">↻</div>
+      <div class="tool-icon">📐</div><div class="tool-icon">✂️</div><div class="tool-icon">🎨</div>
+    </div>
+    <div class="center"><canvas id="canvas"></canvas></div>
+    <div class="right-panel">
+      <div class="panel-tabs">
+        <div class="tab active" onclick="switchTab('layers')">LAYERS</div>
+        <div class="tab" onclick="switchTab('gallery')">GALLERY</div>
+        <div class="tab" onclick="switchTab('marketplace')">MARKET</div>
+      </div>
+      <div class="panel-content" id="panelContent"></div>
     </div>
   </div>
 
-<script>
-function goHome(){ window.location.href = 'home.html'; }
-function goExplore(){ window.location.href = 'atelier.html'; }
-function goGallery(){ localStorage.setItem('openTab', 'gallery'); window.location.href = 'atelier.html'; }
-function goMarketplace(){ localStorage.setItem('openTab', 'marketplace'); window.location.href = 'atelier.html'; }
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0B0B0D);
+const canvas = document.getElementById('canvas');
+const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer: true});
+renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+const controls = new OrbitControls(camera, renderer.domElement);
+camera.position.set(3,2,4); controls.target.set(0,0,0); controls.enableDamping = true;
+
+// LIGHTS + MANNEQUIN
+scene.add(new THREE.AmbientLight(0xDDB892, 0.4));
+scene.add(new THREE.SpotLight(0xffffff, 2).position.set(0, 4, 6));
+scene.add(new THREE.PointLight(0xDDB892, 3, 15).position.set(0, 0, -4));
+const goldMat = new THREE.MeshStandardMaterial({color: 0xDDB892, emissive: 0xDDB892, emissiveIntensity: 0.3, wireframe: true});
+const cylinder = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 2.5, 16, 1, true), goldMat); cylinder.position.y = -0.5; scene.add(cylinder);
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), goldMat); sphere.position.y = 1.2; scene.add(sphere);
+
+function animate(){requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera)} animate();
+
+// ===== GALLERY + MARKETPLACE LOGIC =====
+let gallery = JSON.parse(localStorage.getItem('atelierGallery')) || [];
+
+window.switchTab = (tab) => {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  const content = document.getElementById('panelContent');
+
+  if(tab === 'layers'){
+    content.innerHTML = `<div class="panel-sec"><h4>LAYERS</h4><div class="layer-item">Dart 1</div><div class="layer-item">Dart 2</div><div class="layer-item">Background</div></div>`;
+  }
+  if(tab === 'gallery'){
+    renderGallery(content, false);
+  }
+  if(tab === 'marketplace'){
+    renderGallery(content, true);
+  }
+}
+
+function renderGallery(container, isMarket){
+  let itemsToShow = isMarket? gallery.filter(item => item.published) : gallery;
+
+  if(itemsToShow.length === 0){
+    let msg = isMarket? "No published designs yet.<br>Go to Gallery and click Publish" : "No designs yet.<br>Click File > Save to Gallery";
+    container.innerHTML = `<p style="font-size:12px;color:#A1A1AA;text-align:center;margin-top:20px">${msg}</p>`;
+    return;
+  }
+
+  let html = '<div class="gallery-grid">';
+  itemsToShow.forEach((item, i) => {
+    let realIndex = gallery.indexOf(item); // get real index for delete/publish
+    html += `<div class="gallery-item">
+      <img src="${item.image}" />
+      <p>${item.name}<br><span style="color:#666;font-size:9px">${item.date}</span></p>
+      ${isMarket
+       ? `<button class="gallery-btn" disabled>Published ✓</button>`
+        : `<button class="gallery-btn" onclick="publishItem(${realIndex})">Publish to Market</button>
+           <button class="gallery-btn delete" onclick="deleteItem(${realIndex})">Delete</button>`
+      }
+    </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+window.saveToGallery = () => {
+  renderer.render(scene, camera);
+  const image = canvas.toDataURL('image/png');
+  const newItem = {
+    name: 'Design ' + (gallery.length + 1),
+    image: image,
+    date: new Date().toLocaleDateString(),
+    published: false
+  };
+  gallery.push(newItem);
+  localStorage.setItem('atelierGallery', JSON.stringify(gallery));
+  alert('✅ Saved to Gallery!');
+  document.querySelectorAll('.tab')[1].click(); // auto switch to gallery
+}
+
+window.publishItem = (i) => {
+  gallery[i].published = true;
+  localStorage.setItem('atelierGallery', JSON.stringify(gallery));
+  alert('✅ Published to Marketplace!');
+  switchTab('marketplace');
+}
+
+window.deleteItem = (i) => {
+  gallery.splice(i,1);
+  localStorage.setItem('atelierGallery', JSON.stringify(gallery));
+  switchTab('gallery');
+}
+
+window.exportPNG = () => {
+  renderer.render(scene, camera);
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = 'atelier-design.png';
+  link.click();
+}
+
+window.addEventListener('resize', ()=>{camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();renderer.setSize(canvas.clientWidth,canvas.clientHeight)});
+switchTab('layers'); // load layers first
 </script>
 </body>
 </html>
