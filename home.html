@@ -32,79 +32,23 @@
     font-size:0.9rem;
     transition:0.2s
   }
- .nav button:hover{
-    background:#2a2a2a;
-    color:#DDB892
-  }
- .nav button.active{
-    background:#DDB892;
-    color:#0F0F0F;
-    font-weight:600
-  }
- .content{
-    max-width:900px;
-    margin:80px auto;
-    text-align:center
-  }
-  h1{
-    font-size:2.2rem;
-    margin-bottom:15px;
-    color:#DDB892;
-    font-weight:600
-  }
-  p.subtitle{
-    color:#A0A0A0;
-    line-height:1.8;
-    font-size:1.1rem
-  }
- .btn{
-    background:#DDB892;
-    color:#0F0F0F;
-    border:none;
-    padding:14px 36px;
-    border-radius:8px;
-    font-weight:700;
-    cursor:pointer;
-    margin-top:25px;
-    font-size:1.05rem;
-    transition:0.2s
-  }
- .btn:hover{
-    background:#E8DCCA;
-    transform:scale(1.03)
-  }
- .bubble{
-    background:#1A1A1A;
-    border-radius:30px 30px 0 30px;
-    padding:30px;
-    margin-top:70px;
-    max-width:420px;
-    margin-left:auto;
-    text-align:left;
-    border:1px solid #2a2a2a
-  }
- .bubble p{
-    color:#F5F5F5;
-    line-height:1.6
-  }
- .bubble .btn{
-    background:#F5F5F5;
-    margin-top:15px;
-    padding:10px 24px
-  }
- .bubble .btn:hover{
-    background:#E8E8E8
-  }
-  @media(max-width:768px){
-    .content{margin:60px 20px}
-    h1{font-size:1.6rem}
-    .bubble{margin-top:40px}
-  }
+ .nav button:hover{background:#2a2a2a;color:#DDB892}
+ .nav button.active{background:#DDB892;color:#0F0F0F;font-weight:600}
+ .content{max-width:900px;margin:80px auto;text-align:center}
+  h1{font-size:2.2rem;margin-bottom:15px;color:#DDB892;font-weight:600}
+  p.subtitle{color:#A0A0A0;line-height:1.8;font-size:1.1rem}
+ .btn{background:#DDB892;color:#0F0F0F;border:none;padding:14px 36px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:25px;font-size:1.05rem;transition:0.2s}
+ .btn:hover{background:#E8DCCA;transform:scale(1.03)}
+ .bubble{background:#1A1A1A;border-radius:30px 30px 0 30px;padding:30px;margin-top:70px;max-width:420px;margin-left:auto;text-align:left;border:1px solid #2a2a2a}
+ .bubble p{color:#F5F5F5;line-height:1.6}
+ .bubble .btn{background:#F5F5F5;margin-top:15px;padding:10px 24px}
+ .bubble .btn:hover{background:#E8E8E8}
+  @media(max-width:768px){.content{margin:60px 20px}h1{font-size:1.6rem}.bubble{margin-top:40px}}
 </style>
 </head>
 <body>
   <div class="nav">
-    <button class="active" onclick="goHome()">Home</button>
+    <button class="active">Home</button>
     <button onclick="goExplore()">Explore</button>
     <button onclick="goGallery()">Gallery</button>
     <button onclick="goMarketplace()">Marketplace</button>
@@ -112,43 +56,20 @@
 
   <div class="content">
     <h1>Build your Wardrobe</h1>
-    <p class="subtitle">
-      With a 3D mannequin<br>
-      And export it for your future projects
-    </p>
+    <p class="subtitle">With a 3D mannequin<br>And export it for your future projects</p>
     <button class="btn" onclick="goExplore()">Get started</button>
 
     <div class="bubble">
-      <p>
-        <b>Would you like to create<br>
-        your own fabric design<br>
-        and texture?</b><br>
-        We got you
-      </p>
+      <p><b>Would you like to create<br>your own fabric design<br>and texture?</b><br>We got you</p>
       <button class="btn" onclick="goExplore()">Create</button>
     </div>
   </div>
 
 <script>
-// NAVIGATION FUNCTIONS
-function goHome(){
-  window.location.href = 'home.html';
-}
-function goExplore(){
-  window.location.href = 'atelier.html'; // this is your 3D app file
-}
-function goGallery(){
-  window.location.href = 'atelier.html'; // opens app and auto-switches to gallery tab
-  localStorage.setItem('openTab', 'gallery');
-}
-function goMarketplace(){
-  window.location.href = 'atelier.html'; // opens app and auto-switches to market tab
-  localStorage.setItem('openTab', 'marketplace');
-}
-
-// Set active nav based on current page
-document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
-document.querySelector('.nav button:nth-child(1)').classList.add('active');
+function goHome(){ window.location.href = 'home.html'; }
+function goExplore(){ window.location.href = 'atelier.html'; }
+function goGallery(){ localStorage.setItem('openTab', 'gallery'); window.location.href = 'atelier.html'; }
+function goMarketplace(){ localStorage.setItem('openTab', 'marketplace'); window.location.href = 'atelier.html'; }
 </script>
 </body>
 </html>
